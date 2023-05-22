@@ -11,6 +11,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Aviso;
 
 /**
  *
@@ -84,4 +85,10 @@ public class AvisoServiet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    @Override
+    public void init() throws ServletException {
+        super.init(); 
+        Aviso.createTableAviso();
+    }
+    
 }
