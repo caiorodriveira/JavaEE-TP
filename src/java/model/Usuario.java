@@ -18,7 +18,8 @@ public class Usuario {
             stmt.execute("create table if not exists usuario (\n"
                     + "id_usuario int auto_increment primary key,\n"
                     + "nome varchar(100) not null,\n"
-                    + "email varchar(50) not null unique))");
+                    + "email varchar(50) not null unique, \n"
+                    + "senha varchar(250) not null))");
             stmt.close();
             con.close();
         } catch (Exception ex) {

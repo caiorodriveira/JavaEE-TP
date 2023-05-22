@@ -12,7 +12,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Date;
 import model.Aviso;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -41,9 +45,29 @@ public class AvisoServiet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("application/json/charset=UTF-8");
+        JSONObject file = new JSONObject();
+        try {
+            file.put("exception", Aviso.exception);
+            ArrayList<Aviso> list = Aviso.getAvisos();
+            JSONArray arr = new JSONArray();
+            for(Aviso a: list){
+                JSONObject tituloObject = new JSONObject();
+                JSONObject conteudoObject = new JSONObject();
+                tituloObject.put("titulo", a.getTitulo());
+                conteudoObject.put("conteudo", a.getConteudo());
+         
+                arr.put(tituloObject);
+                arr.put(conteudoObject);
+            }
+            file.put("avisos", arr);
+        } catch (Exception ex) {
+            response.setStatus(500);
+            file.put("Error", ex.getLocalizedMessage());
+            response.getWriter().print(file.toString());
+        }
+        response.getWriter().print(file.toString());
     }
 
     /**
@@ -55,9 +79,24 @@ public class AvisoServiet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("application/json/charset=UTF-8");
+        JSONObject file = new JSONObject();
+
+    }
+
+    /**
+     * Handles the HTTP <code>DELETE</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("application/json/charset=UTF-8");
+        JSONObject file = new JSONObject();
     }
 
     /**
@@ -70,10 +109,5 @@ public class AvisoServiet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    @Override
-    public void init() throws ServletException {
-        super.init(); 
-        Aviso.createTableAviso();
-    }
-    
+   
 }
