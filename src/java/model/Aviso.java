@@ -20,6 +20,7 @@ public class Aviso {
                     + "nm_titulo varchar(100) not null,\n"
                     + "ds_conteudo text,\n"
                     + "id_usuario int not null,\n"
+                    + "dt_aviso date, \n"
                     + "constraint fk_usuario foreign key (id_usuario) references usuario (id_usuario))");
             stmt.close();
             con.close();
