@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import model.Aviso;
+import model.Usuario;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -109,5 +110,11 @@ public class AvisoServiet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        Usuario.createTableUsuario();
+        Aviso.createTableAviso();
+    }
    
 }
