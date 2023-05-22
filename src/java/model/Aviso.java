@@ -32,4 +32,6 @@ public class Aviso {
         Class.forName(CLASS_NAME);
         return DriverManager.getConnection(URL);
     }
+    
+    
 }
