@@ -22,4 +22,9 @@
       <description>Keep a copy of the generated servlet class' java code.</description>
     </property>
   </jsp-config>
+    <listener>
+    <description>ServletContextListener</description>
+    <listener-class>db.AppListener</listener-class>
+  </listener>
 </glassfish-web-app>
+

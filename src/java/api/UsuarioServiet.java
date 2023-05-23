@@ -73,12 +73,4 @@ public class UsuarioServiet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    @Override
-    public void init() throws ServletException {
-        super.init();
-        Usuario.createTableUsuario();
-        Aviso.createTableAviso();
-    }
-
-    
 }

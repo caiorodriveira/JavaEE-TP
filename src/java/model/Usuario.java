@@ -11,20 +11,14 @@ public class Usuario {
 
     public static Exception exception = null;
 
-    public static void createTableUsuario() {
-        try {
-            Connection con = getConnection();
-            Statement stmt = con.createStatement();
-            stmt.execute("create table if not exists usuario (\n"
+    public static String createTableUsuario() {
+
+            return "create table if not exists usuario (\n"
                     + "id_usuario int auto_increment primary key,\n"
                     + "nome varchar(100) not null,\n"
                     + "email varchar(50) not null unique, \n"
-                    + "senha varchar(250) not null))");
-            stmt.close();
-            con.close();
-        } catch (Exception ex) {
-            exception = ex;
-        }
+                    + "senha varchar(250) not null))";
+
     }
 
     public static Connection getConnection() throws Exception {
