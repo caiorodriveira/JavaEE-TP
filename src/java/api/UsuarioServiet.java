@@ -12,8 +12,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
+import java.util.ArrayList;
 import model.Aviso;
 import model.Usuario;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -46,7 +48,30 @@ public class UsuarioServiet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        response.setContentType("application/json/charset=UTF-8");
+        JSONObject file = new JSONObject();
+        try {
+            file.put("exception", Usuario.exception);
+            ArrayList<Usuario> list = Usuario.getUsuarios();
+            JSONArray arr = new JSONArray();
+            for(Usuario u: list){
+                JSONObject nomeJson = new JSONObject();
+                JSONObject emailJson = new JSONObject();
+                JSONObject senhaJson = new JSONObject();
+                nomeJson.put("nome", u.getNome());
+                emailJson.put("email", u.getEmail());
+                senhaJson.put("nome", u.getSenha());
+                arr.put(nomeJson);
+                arr.put(emailJson);
+                arr.put(senhaJson);
+            }
+            file.put("usuarios", arr);
+        } catch (Exception ex) {
+            response.setStatus(500);
+            file.put("Error", ex.getLocalizedMessage());
+            response.getWriter().print(file.toString());
+        }
+        response.getWriter().print(file.toString());
     }
 
     /**
@@ -60,6 +85,7 @@ public class UsuarioServiet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
     
     }
 
