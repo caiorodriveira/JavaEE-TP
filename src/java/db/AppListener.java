@@ -5,10 +5,8 @@ import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.Date; 
+import java.util.Date;
 import model.Aviso;
 import model.Usuario;
 
@@ -20,7 +18,6 @@ import model.Usuario;
  *
  * @author kakaz
  */
-
 @WebListener
 public class AppListener implements ServletContextListener {
 
@@ -41,29 +38,28 @@ public class AppListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        try{
-            Connection c = AppListener.getConnection();
+        try {
+            Connection c = getConnection();
             Statement s = c.createStatement();
             initializeLog += new Date() + ": Initializing database creation; ";
-            
+
             //Usuario
             initializeLog += "Creating Usuario table if not exists...";
             s.execute(Usuario.createTableUsuario());
             initializeLog += "done; ";
             //criar verificação se não existir usuário criar um admin com metodos da classe
-            
+
             //Avisos
             initializeLog += "Creating Aviso table if not exists...";
             s.execute(Aviso.createTableAviso());
             initializeLog += "done.";
             s.close();
             c.close();
-            
-        } catch (Exception ex){
+
+        } catch (Exception ex) {
             initializeLog += "Erro: " + ex.getMessage();
             System.out.println("Erro: " + ex.getMessage());
         }
     }
-    
-    
+
 }

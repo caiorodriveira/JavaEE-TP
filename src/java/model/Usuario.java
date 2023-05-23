@@ -6,24 +6,15 @@ import java.sql.Statement;
 
 public class Usuario {
 
-    public static final String CLASS_NAME = "org.sqlite.JDBC";
-    public static final String URL = "jdbc:sqlite:db_avisos.db";
-
     public static Exception exception = null;
 
     public static String createTableUsuario() {
-
-            return "create table if not exists usuario (\n"
+        return "create table if not exists usuario (\n"
                     + "id_usuario int auto_increment primary key,\n"
                     + "nome varchar(100) not null,\n"
                     + "email varchar(50) not null unique, \n"
-                    + "senha varchar(250) not null))";
+                    + "senha varchar(250) not null)";
 
-    }
-
-    public static Connection getConnection() throws Exception {
-        Class.forName(CLASS_NAME);
-        return DriverManager.getConnection(URL);
-    }
+        }
 
 }

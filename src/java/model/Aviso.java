@@ -1,5 +1,6 @@
 package model;
 
+import db.AppListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -26,14 +27,9 @@ public class Aviso {
 
     }
 
-    public static Connection getConnection() throws Exception {
-        Class.forName(CLASS_NAME);
-        return DriverManager.getConnection(URL);
-    }
-
     public static ArrayList<Aviso> getAvisos() throws Exception {
         ArrayList<Aviso> avisos = new ArrayList<>();
-        Connection con = getConnection();
+        Connection con = AppListener.getConnection();
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery("select * from aviso");
         while (rs.next()) {
@@ -46,7 +42,7 @@ public class Aviso {
     }
 
     public static void addAviso(String titulo, String conteudo, String data) throws Exception {
-        Connection con = getConnection();
+        Connection con = AppListener.getConnection();
         PreparedStatement stmt = con.prepareStatement("insert into aviso values(?)");
         stmt.setString(1, titulo);
         stmt.setString(2, conteudo);
@@ -57,7 +53,7 @@ public class Aviso {
     }
 
     public static void removeAviso(String titulo, String conteudo, String data) throws Exception {
-        Connection con = getConnection();
+        Connection con = AppListener.getConnection();
         PreparedStatement stmt = con.prepareStatement("delete from aviso where id_aviso = ?");
         stmt.setString(1, titulo);
         stmt.setString(2, conteudo);
