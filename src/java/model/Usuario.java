@@ -37,7 +37,7 @@ public class Usuario {
     
     public static void addUsuario(String nome, String email, String senha) throws Exception {
         Connection con = AppListener.getConnection();
-        PreparedStatement stmt = con.prepareStatement("insert into usuario values(?)");
+        PreparedStatement stmt = con.prepareStatement("insert into usuario(nome, email, senha) values(?, ? ,?)");
         stmt.setString(1, nome);
         stmt.setString(2, email);
         stmt.setString(3, senha);
