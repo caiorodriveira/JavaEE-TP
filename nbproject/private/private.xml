@@ -5,7 +5,10 @@
         <group>
             <file>file:/C:/Users/pedro/OneDrive/Documentos/NetBeansProjects/TPJavaPOO/TP-JavaEE/src/java/api/UsuarioServiet.java</file>
             <file>file:/C:/Users/pedro/OneDrive/Documentos/NetBeansProjects/TPJavaPOO/TP-JavaEE/src/java/api/AvisoServiet.java</file>
+            <file>file:/C:/Users/pedro/OneDrive/Documentos/NetBeansProjects/TPJavaPOO/TP-JavaEE/web/index.jsp</file>
             <file>file:/C:/Users/pedro/OneDrive/Documentos/NetBeansProjects/TPJavaPOO/TP-JavaEE/src/java/model/Usuario.java</file>
+            <file>file:/C:/Users/pedro/OneDrive/Documentos/NetBeansProjects/TPJavaPOO/TP-JavaEE/src/java/model/Aviso.java</file>
+            <file>file:/C:/Users/pedro/OneDrive/Documentos/NetBeansProjects/TPJavaPOO/TP-JavaEE/src/java/db/AppListener.java</file>
         </group>
     </open-files>
 </project-private>

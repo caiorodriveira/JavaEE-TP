@@ -17,7 +17,7 @@ public class Usuario {
                     + "id_usuario int auto_increment primary key,\n"
                     + "nome varchar(100) not null,\n"
                     + "email varchar(50) not null unique, \n"
-                    + "role varchar (5) not null \n"
+                    + "role varchar (5) not null, \n"
                     + "senha varchar(250) not null)";
 
         }
