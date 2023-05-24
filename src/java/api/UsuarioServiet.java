@@ -33,6 +33,7 @@ public class UsuarioServiet extends HttpServlet {
         }
         return new JSONObject(buffer.toString());
     }
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,9 +43,8 @@ public class UsuarioServiet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
- 
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-  
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -54,16 +54,13 @@ public class UsuarioServiet extends HttpServlet {
             file.put("exception", Usuario.exception);
             ArrayList<Usuario> list = Usuario.getUsuarios();
             JSONArray arr = new JSONArray();
-            for(Usuario u: list){
-                JSONObject nomeJson = new JSONObject();
-                JSONObject emailJson = new JSONObject();
-                JSONObject senhaJson = new JSONObject();
-                nomeJson.put("nome", u.getNome());
-                emailJson.put("email", u.getEmail());
-                senhaJson.put("senha", u.getSenha());
-                arr.put(nomeJson);
-                arr.put(emailJson);
-                arr.put(senhaJson);
+            for (Usuario u : list) {
+                JSONObject usuarioJson = new JSONObject();
+                usuarioJson.put("nome", u.getNome());
+                usuarioJson.put("email", u.getEmail());
+                usuarioJson.put("role", u.getRole());
+                usuarioJson.put("senha", u.getSenha());
+                arr.put(usuarioJson);
             }
             file.put("usuarios", arr);
         } catch (Exception ex) {
@@ -91,33 +88,31 @@ public class UsuarioServiet extends HttpServlet {
             JSONObject body = getJSONBody(request.getReader());
             String nome = body.getString("nome");
             String email = body.getString("email");
+            String role = body.getString("role");
             int senha = (Integer) body.getString("senha").hashCode();
             String senhaHash = Integer.toString(senha);
             if (nome != null && email != null && senhaHash != null) {
-                Usuario.addUsuario(nome, email, senhaHash);
+                Usuario.addUsuario(nome, email, role, senhaHash);
             }
             ArrayList<Usuario> list = Usuario.getUsuarios();
             JSONArray arr = new JSONArray();
-            for(Usuario u: list){
-                JSONObject nomeJson = new JSONObject();
-                JSONObject emailJson = new JSONObject();
-                JSONObject senhaJson = new JSONObject();
-                nomeJson.put("nome", u.getNome());
-                emailJson.put("email", u.getEmail());
-                senhaJson.put("senha", u.getSenha());
-                arr.put(nomeJson);
-                arr.put(emailJson);
-                arr.put(senhaJson);
+            for (Usuario u : list) {
+                JSONObject usuarioJson = new JSONObject();
+                usuarioJson.put("nome", u.getNome());
+                usuarioJson.put("email", u.getEmail());
+                usuarioJson.put("role", u.getRole());
+                usuarioJson.put("senha", u.getSenha());
+                arr.put(usuarioJson);
             }
             file.put("usuarios", arr);
             response.getWriter().print(file.toString());
-            
+
         } catch (Exception ex) {
             response.setStatus(500);
             file.put("Error", ex.getLocalizedMessage());
             response.getWriter().print(file.toString());
         }
-    
+
     }
 
     /**

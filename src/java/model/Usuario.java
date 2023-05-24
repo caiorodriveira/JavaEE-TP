@@ -17,6 +17,7 @@ public class Usuario {
                     + "id_usuario int auto_increment primary key,\n"
                     + "nome varchar(100) not null,\n"
                     + "email varchar(50) not null unique, \n"
+                    + "role varchar (5) not null \n"
                     + "senha varchar(250) not null)";
 
         }
@@ -27,7 +28,7 @@ public class Usuario {
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery("select * from usuario");
         while (rs.next()) {
-            usuarios.add(new Usuario(rs.getString("nome"), rs.getString("email"), rs.getString("senha")));
+            usuarios.add(new Usuario(rs.getString("nome"), rs.getString("email"), rs.getString("role"), rs.getString("senha")));
         }
         rs.close();
         stmt.close();
@@ -35,12 +36,13 @@ public class Usuario {
         return usuarios;
     }
     
-    public static void addUsuario(String nome, String email, String senha) throws Exception {
+    public static void addUsuario(String nome, String email, String role, String senha) throws Exception {
         Connection con = AppListener.getConnection();
-        PreparedStatement stmt = con.prepareStatement("insert into usuario(nome, email, senha) values(?, ? ,?)");
+        PreparedStatement stmt = con.prepareStatement("insert into usuario(nome, email, role, senha) values(?, ?, ? ,?)");
         stmt.setString(1, nome);
         stmt.setString(2, email);
-        stmt.setString(3, senha);
+        stmt.setString(3, role);
+        stmt.setString(4, senha);
         stmt.execute();
         stmt.close();
         con.close();
@@ -49,18 +51,29 @@ public class Usuario {
     private String nome;
     private String email;
     private String senha;
+    private String role;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     
     public Usuario() {
         this.setNome("[NEW]");
         this.setEmail("[NEW]");
         this.setSenha("[NEW]");
+        this.setRole("[NEW]");
     }
 
-    public Usuario(String nome, String email, String senha) {
+    public Usuario(String nome, String email, String role, String senha) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
+        this.role = role;
     }
     
     public String getNome() {

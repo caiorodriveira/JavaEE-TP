@@ -48,6 +48,13 @@ public class AppListener implements ServletContextListener {
             s.execute(Usuario.createTableUsuario());
             initializeLog += "done; ";
             //criar verificação se não existir usuário criar um admin com metodos da classe
+            if(Usuario.getUsuarios().isEmpty()){
+                initializeLog += "Adding default users...";
+                Usuario.addUsuario("admin", "admin@admin.com", "ADMIN", "admin1234");
+                initializeLog += "admin added; ";
+                Usuario.addUsuario("user", "user@default.com", "USER", "user1234");
+                initializeLog += "user added; ";
+            }
 
             //Avisos
             initializeLog += "Creating Aviso table if not exists...";
@@ -58,7 +65,6 @@ public class AppListener implements ServletContextListener {
 
         } catch (Exception ex) {
             initializeLog += "Erro: " + ex.getMessage();
-            System.out.println("Erro: " + ex.getMessage());
         }
     }
 

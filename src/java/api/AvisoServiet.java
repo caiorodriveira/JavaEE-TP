@@ -54,13 +54,12 @@ public class AvisoServiet extends HttpServlet {
             ArrayList<Aviso> list = Aviso.getAvisos();
             JSONArray arr = new JSONArray();
             for(Aviso a: list){
-                JSONObject tituloObject = new JSONObject();
-                JSONObject conteudoObject = new JSONObject();
-                tituloObject.put("titulo", a.getTitulo());
-                conteudoObject.put("conteudo", a.getConteudo());
+                JSONObject avisoObject = new JSONObject();
+                avisoObject.put("titulo", a.getTitulo());
+                avisoObject.put("conteudo", a.getConteudo());
+                avisoObject.put("data", a.getData());
          
-                arr.put(tituloObject);
-                arr.put(conteudoObject);
+                arr.put(avisoObject);
             }
             file.put("avisos", arr);
         } catch (Exception ex) {
