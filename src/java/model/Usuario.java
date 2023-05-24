@@ -36,6 +36,20 @@ public class Usuario {
         return usuarios;
     }
     
+    public static ArrayList<Usuario> getUsuarioByEmail() throws Exception {
+        ArrayList<Usuario> usuarios = new ArrayList<>();
+        Connection con = AppListener.getConnection();
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery("select * from usuario where email = ?");
+        while (rs.next()) {
+            usuarios.add(new Usuario(rs.getString("nome"), rs.getString("email"), rs.getString("role"), rs.getString("senha")));
+        }
+        rs.close();
+        stmt.close();
+        con.close();
+        return usuarios;
+    }
+    
     public static void addUsuario(String nome, String email, String role, String senha) throws Exception {
         Connection con = AppListener.getConnection();
         PreparedStatement stmt = con.prepareStatement("insert into usuario(nome, email, role, senha) values(?, ?, ? ,?)");
@@ -48,18 +62,36 @@ public class Usuario {
         con.close();
     }
     
+        public static void removeUsuario(String nome, String email, String role, String senha) throws Exception {
+        Connection con = AppListener.getConnection();
+        PreparedStatement stmt = con.prepareStatement("delete from usuario where id_usuario = ?");
+        stmt.setString(1, nome);
+        stmt.setString(2, email);
+        stmt.setString(3, role);
+        stmt.setString(4, senha);
+        stmt.execute();
+        stmt.close();
+        con.close();
+    }
+        
+    public static void updateUsuario(String nome, String email, String senha) throws Exception{
+        Connection con = AppListener.getConnection();
+        PreparedStatement stmt = con.prepareStatement("update usuario set nome = ?, email = ?, senha = ? where id_usuario = ?");
+        stmt.setString(1, nome);
+        stmt.setString(2, email);
+        stmt.setString(3, senha);
+        stmt.execute();
+        stmt.close();
+        con.close();
+    }
+
+     
     private String nome;
     private String email;
     private String senha;
     private String role;
 
-    public String getRole() {
-        return role;
-    }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
 
     
     public Usuario() {
@@ -80,6 +112,7 @@ public class Usuario {
         return nome;
     }
 
+
     public String getEmail() {
         return email;
     }
@@ -88,6 +121,13 @@ public class Usuario {
         return senha;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -99,4 +139,5 @@ public class Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
+    
 }
