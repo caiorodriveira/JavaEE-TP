@@ -6,16 +6,18 @@
     if(request.getParameter("btn-registrar") != null){
         String nome = request.getParameter("nome");
         String email = request.getParameter("email");
-        String senha = request.getParameter("senha");
+        int senha = (Integer) request.getParameter("senha").hashCode();
+        String senhaHash = Integer.toString(senha);
         
         try{
                Usuario u = new Usuario();
-               u.addUsuario(nome, email, "OPERADOR", senha);
+               u.addUsuario(nome, email, "USER", senhaHash);
                
-               response.sendRedirect(request.getRequestURI());
             
-        }catch(Exception ex){
+        } catch(Exception ex){
             loginErrorMessage = ex.getMessage();
+        } finally {
+            response.sendRedirect(request.getContextPath()+"/login.jsp");
         }
     }
 %>
