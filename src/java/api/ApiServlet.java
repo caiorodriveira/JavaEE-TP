@@ -119,7 +119,16 @@ public class ApiServlet extends HttpServlet {
         }
     }
     private void processUsuarios(JSONObject file, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        
+        if(request.getMethod().toLowerCase().equals("get")){
+            file.put("usuarios", new JSONArray(Usuario.getUsuarios()));
+            response.getWriter().print(file.toString());
+        } else if(request.getMethod().toLowerCase().equals("post")){
+            JSONObject body = getJSONBody(request.getReader());
+            String nome = body.getString("nome");
+            String email = body.getString("email");
+            String senha = body.getString("senha");
+            Usuario.addUsuario(nome, email, "USER", senha);
+        }
     }
 
     private void processAvisos(JSONObject file, HttpServletRequest request, HttpServletResponse response) throws Exception {
