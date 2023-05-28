@@ -4,6 +4,7 @@
  */
 package api;
 
+import jakarta.servlet.ServletConfig;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -22,7 +23,7 @@ import org.json.JSONObject;
  *
  * @author Fatec
  */
-@WebServlet(name = "UsuarioServiet", urlPatterns = {"/api/*"})
+@WebServlet(name = "ApiServlet", urlPatterns = {"/api/*"})
 public class ApiServlet extends HttpServlet {
 
     private JSONObject getJSONBody(BufferedReader reader) throws Exception {
@@ -35,8 +36,8 @@ public class ApiServlet extends HttpServlet {
     }
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("applcation/json;charset=UTF-8");
-        JSONObject file = new JSONObject();
+        response.setContentType("application/json;charset=UTF-8");
+        JSONObject file = new JSONObject(); 
         try{
            if(request.getRequestURI().endsWith("/api/session")){
                processSession(file, request, response);
@@ -55,13 +56,11 @@ public class ApiServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
        processRequest(request, response);
     }
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         processRequest(request, response);
 
     }
@@ -91,17 +90,30 @@ public class ApiServlet extends HttpServlet {
                 response.sendError(403, "Email ou Senha invalidos!");
             } else {
                 request.getSession().setAttribute("usuario", u);
-                file.put("email", u.getEmail());
                 file.put("nome", u.getNome());
+                file.put("email", u.getEmail());
                 file.put("role", u.getRole());
                 file.put("senha", u.getSenha());
                 
                 file.put("message", "Logado com sucesso!");
+                response.getWriter().print(file.toString());
             }
         } else if(request.getMethod().toLowerCase().equals("delete")){
+            request.getSession().removeAttribute("usuario");
+            file.put("message", "Deslogado com sucesso!");
+            response.getWriter().print(file.toString());
             
         } else if(request.getMethod().toLowerCase().equals("get")){
-        
+            if(request.getSession().getAttribute("usuario") == null){
+                response.sendError(403, "Não existe sessão");
+            } else {
+                Usuario u = (Usuario) request.getSession().getAttribute("usuario");
+                file.put("nome", u.getNome());
+                file.put("email", u.getEmail());
+                file.put("role", u.getRole());
+                file.put("senha", u.getSenha());
+                response.getWriter().print(file.toString());
+            }
         } else {
             response.sendError(405, "Method not allowed");
         }

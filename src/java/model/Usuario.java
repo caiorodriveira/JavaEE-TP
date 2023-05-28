@@ -42,7 +42,7 @@ public class Usuario {
         stmt.setString(1, nome);
         stmt.setString(2, email);
         stmt.setString(3, role);
-        stmt.setString(4, senha);
+        stmt.setString(4, AppListener.getMd5Hash(senha));
         stmt.execute();
         stmt.close();
         con.close();
