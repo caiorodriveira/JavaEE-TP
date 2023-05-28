@@ -28,7 +28,7 @@ public class Usuario {
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery("select * from usuario");
         while (rs.next()) {
-            usuarios.add(new Usuario(rs.getString("nome"), rs.getString("email"), rs.getString("role"), rs.getString("senha")));
+            usuarios.add(new Usuario(rs.getString("nome"), rs.getString("email"), rs.getString("role"), rs.getString("senha"), rs.getLong("id_usuario")));
         }
         rs.close();
         stmt.close();
@@ -42,7 +42,7 @@ public class Usuario {
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery("select * from usuario where email = ?");
         while (rs.next()) {
-            usuarios.add(new Usuario(rs.getString("nome"), rs.getString("email"), rs.getString("role"), rs.getString("senha")));
+            usuarios.add(new Usuario(rs.getString("nome"), rs.getString("email"), rs.getString("role"), rs.getString("senha"), rs.getLong("id_usuario")));
         }
         rs.close();
         stmt.close();
@@ -75,14 +75,15 @@ public class Usuario {
             String emailUsuario = rs.getString("email");
             String role = rs.getString("role");
             String senhaHash = rs.getString("senha");
-            user = new Usuario(nome, emailUsuario, role, senhaHash);
+            Long idUsuario = rs.getLong("id_usuario");
+            user = new Usuario(nome, emailUsuario, role, senhaHash, idUsuario);
         }
         rs.close();
         stmt.close();
         con.close();
         return user;
     }
-    
+    private Long ID;
     private String nome;
     private String email;
     private String senha;
@@ -98,11 +99,12 @@ public class Usuario {
         this.setRole("[NEW]");
     }
 
-    public Usuario(String nome, String email, String role, String senha) {
+    public Usuario(String nome, String email, String role, String senha, Long id) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
         this.role = role;
+        this.ID = id;
     }
     
     public String getNome() {
@@ -122,6 +124,10 @@ public class Usuario {
         return role;
     }
 
+    public Long getID(){
+        return ID;
+    }
+    
     public void setRole(String role) {
         this.role = role;
     }
