@@ -56,36 +56,33 @@ public class Usuario {
         stmt.setString(1, nome);
         stmt.setString(2, email);
         stmt.setString(3, role);
-        stmt.setString(4, senha);
+        stmt.setString(4, AppListener.getMd5Hash(senha));
         stmt.execute();
         stmt.close();
         con.close();
     }
     
-        public static void removeUsuario(String nome, String email, String role, String senha) throws Exception {
+    public static Usuario getUsuario(String email, String senha) throws Exception {
+        Usuario user = null;
         Connection con = AppListener.getConnection();
-        PreparedStatement stmt = con.prepareStatement("delete from usuario where id_usuario = ?");
-        stmt.setString(1, nome);
-        stmt.setString(2, email);
-        stmt.setString(3, role);
-        stmt.setString(4, senha);
-        stmt.execute();
+        String sql = "SELECT * from usuario WHERE email=? AND senha=?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setString(1, email);
+        stmt.setString(2, AppListener.getMd5Hash(senha));
+        ResultSet rs = stmt.executeQuery();
+        if(rs.next()){
+            String nome = rs.getString("nome");
+            String emailUsuario = rs.getString("email");
+            String role = rs.getString("role");
+            String senhaHash = rs.getString("senha");
+            user = new Usuario(nome, emailUsuario, role, senhaHash);
+        }
+        rs.close();
         stmt.close();
         con.close();
+        return user;
     }
-        
-    public static void updateUsuario(String nome, String email, String senha) throws Exception{
-        Connection con = AppListener.getConnection();
-        PreparedStatement stmt = con.prepareStatement("update usuario set nome = ?, email = ?, senha = ? where id_usuario = ?");
-        stmt.setString(1, nome);
-        stmt.setString(2, email);
-        stmt.setString(3, senha);
-        stmt.execute();
-        stmt.close();
-        con.close();
-    }
-
-     
+    
     private String nome;
     private String email;
     private String senha;

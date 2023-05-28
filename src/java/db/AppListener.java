@@ -3,6 +3,9 @@ package db;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -66,6 +69,12 @@ public class AppListener implements ServletContextListener {
         } catch (Exception ex) {
             initializeLog += "Erro: " + ex.getMessage();
         }
+    }
+    
+    public static String getMd5Hash(String text) throws NoSuchAlgorithmException {
+        MessageDigest m = MessageDigest.getInstance("MD5");
+        m.update(text.getBytes(), 0, text.length());
+        return new BigInteger(1, m.digest()).toString();
     }
 
 }
