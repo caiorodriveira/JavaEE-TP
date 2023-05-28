@@ -48,6 +48,27 @@ public class Usuario {
         con.close();
     }
     
+    public static Usuario getUsuario(String email, String senha) throws Exception {
+        Usuario user = null;
+        Connection con = AppListener.getConnection();
+        String sql = "SELECT * from usuario WHERE email=? AND senha=?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setString(1, email);
+        stmt.setString(2, AppListener.getMd5Hash(senha));
+        ResultSet rs = stmt.executeQuery();
+        if(rs.next()){
+            String nome = rs.getString("nome");
+            String emailUsuario = rs.getString("email");
+            String role = rs.getString("role");
+            String senhaHash = rs.getString("senha");
+            user = new Usuario(nome, emailUsuario, role, senhaHash);
+        }
+        rs.close();
+        stmt.close();
+        con.close();
+        return user;
+    }
+    
     private String nome;
     private String email;
     private String senha;
