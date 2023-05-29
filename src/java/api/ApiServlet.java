@@ -121,7 +121,7 @@ public class ApiServlet extends HttpServlet {
     }
     private void processUsuarios(JSONObject file, HttpServletRequest request, HttpServletResponse response) throws Exception {
         if(request.getMethod().toLowerCase().equals("get")){
-            if(!((Usuario)request.getSession().getAttribute("Usuario")).getRole().equals("ADMIN")){
+            if(!((Usuario)request.getSession().getAttribute("usuario")).getRole().equals("ADMIN")){
                 response.sendError(401, "Erro! Apenas administradores podem atualizar avisos!");
             } else {
                 file.put("usuarios", new JSONArray(Usuario.getUsuarios()));
@@ -156,7 +156,7 @@ public class ApiServlet extends HttpServlet {
             file.put("avisos", new JSONArray(Aviso.getAvisos()));
             response.getWriter().print(file.toString());
         } else if(request.getMethod().toLowerCase().equals("post")){
-            if(!((Usuario)request.getSession().getAttribute("Usuario")).getRole().equals("ADMIN")){
+            if(!((Usuario)request.getSession().getAttribute("usuario")).getRole().equals("ADMIN")){
                 response.sendError(401, "Erro! Apenas administradores podem adicionar avisos!");
             } else {
                 JSONObject body = getJSONBody(request.getReader());
@@ -166,7 +166,7 @@ public class ApiServlet extends HttpServlet {
                 Aviso.addAviso(titulo, conteudo, data);
             }
         } else if(request.getMethod().toLowerCase().equals("put")){
-            if(!((Usuario)request.getSession().getAttribute("Usuario")).getRole().equals("ADMIN")){
+            if(!((Usuario)request.getSession().getAttribute("usuario")).getRole().equals("ADMIN")){
                 response.sendError(401, "Erro! Apenas administradores podem atualizar avisos!");
             } else {
                 JSONObject body = getJSONBody(request.getReader());
@@ -177,7 +177,7 @@ public class ApiServlet extends HttpServlet {
                 Aviso.updateAviso(id, titulo, conteudo, data);
             }
         } else if(request.getMethod().toLowerCase().equals("delete")){
-            if(!((Usuario)request.getSession().getAttribute("Usuario")).getRole().equals("ADMIN")){
+            if(!((Usuario)request.getSession().getAttribute("usuario")).getRole().equals("ADMIN")){
                 response.sendError(401, "Erro! Apenas administradores podem deletar avisos!");
             } else {
                 Long id = Long.parseLong(request.getParameter("id"));
