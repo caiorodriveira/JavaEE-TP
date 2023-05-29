@@ -84,25 +84,23 @@ public class Usuario {
         return user;
     }
     
-    public static void deleteUsuario(String nome, String email, String role, String senha) throws Exception {
+    public static void deleteUsuario(Long id) throws Exception {
         Connection con = AppListener.getConnection();
         PreparedStatement stmt = con.prepareStatement("delete from usuario where id_usuario = ?");
-        stmt.setString(1, nome);
-        stmt.setString(2, email);
-        stmt.setString(3, role);
-        stmt.setString(4, senha);
+        stmt.setLong(1, id);
         stmt.execute();
         stmt.close();
         con.close();
     }
         
-    public static void updateUsuario(String nome, String email, String senha, String role) throws Exception{
+    public static void updateUsuario(Long id, String nome, String email, String senha, String role) throws Exception{
         Connection con = AppListener.getConnection();
         PreparedStatement stmt = con.prepareStatement("update usuario set nome = ?, email = ?, senha = ?, role = ? where id_usuario = ?");
         stmt.setString(1, nome);
         stmt.setString(2, email);
         stmt.setString(3, senha);
         stmt.setString(4, role);
+        stmt.setLong(5, id);
         stmt.execute();
         stmt.close();
         con.close();

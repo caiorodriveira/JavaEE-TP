@@ -52,29 +52,27 @@ public class Aviso {
         con.close();
     }
 
-    public static void removeAviso(String titulo, String conteudo, String data) throws Exception {
+    public static void removeAviso(Long id) throws Exception {
         Connection con = AppListener.getConnection();
         PreparedStatement stmt = con.prepareStatement("delete from aviso where id_aviso = ?");
-        stmt.setString(1, titulo);
-        stmt.setString(2, conteudo);
-        stmt.setString(3, data);
+        stmt.setLong(1, id);
         stmt.execute();
         stmt.close();
         con.close();
     }
 
-    public static void updateAviso(String titulo, String conteudo, String data) throws Exception{
+    public static void updateAviso(Long id, String titulo, String conteudo, String data) throws Exception{
         Connection con = AppListener.getConnection();
         PreparedStatement stmt = con.prepareStatement("update aviso set titulo = ?, conteudo = ?, data = ? where id_aviso = ?");
         stmt.setString(1, titulo);
         stmt.setString(2, conteudo);
         stmt.setString(3, data);
+        stmt.setLong(4, id);
         stmt.execute();
         stmt.close();
         con.close();
     }
 
-    
     private String titulo;
     private String conteudo;
     private String data;
@@ -90,6 +88,8 @@ public class Aviso {
         this.data = data;
     }
 
+    
+        
     public String getTitulo() {
         return titulo;
     }
