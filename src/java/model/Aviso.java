@@ -53,7 +53,7 @@ public class Aviso {
 
     public static void removeAviso(Long id) throws Exception {
         Connection con = AppListener.getConnection();
-        PreparedStatement stmt = con.prepareStatement("delete from aviso where id_aviso = ?");
+        PreparedStatement stmt = con.prepareStatement("delete from aviso where rowid = ?");
         stmt.setLong(1, id);
         stmt.execute();
         stmt.close();
@@ -62,7 +62,7 @@ public class Aviso {
 
     public static void updateAviso(Long id, String titulo, String conteudo, String data) throws Exception{
         Connection con = AppListener.getConnection();
-        PreparedStatement stmt = con.prepareStatement("update aviso set titulo = ?, conteudo = ?, data = ? where id_aviso = ?");
+        PreparedStatement stmt = con.prepareStatement("update aviso set titulo = ?, conteudo = ?, data = ? where rowid = ?");
         stmt.setString(1, titulo);
         stmt.setString(2, conteudo);
         stmt.setString(3, data);

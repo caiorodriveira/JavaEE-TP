@@ -85,7 +85,7 @@ public class Usuario {
     
     public static void deleteUsuario(Long id) throws Exception {
         Connection con = AppListener.getConnection();
-        PreparedStatement stmt = con.prepareStatement("delete from usuario where id_usuario = ?");
+        PreparedStatement stmt = con.prepareStatement("delete from usuario where rowid = ?");
         stmt.setLong(1, id);
         stmt.execute();
         stmt.close();
@@ -94,7 +94,7 @@ public class Usuario {
         
     public static void updateUsuario(Long id, String nome, String email, String senha, String role) throws Exception{
         Connection con = AppListener.getConnection();
-        PreparedStatement stmt = con.prepareStatement("update usuario set nome = ?, email = ?, senha = ?, role = ? where id_usuario = ?");
+        PreparedStatement stmt = con.prepareStatement("update usuario set nome = ?, email = ?, senha = ?, role = ? where rowid = ?");
         stmt.setString(1, nome);
         stmt.setString(2, email);
         stmt.setString(3, senha);
