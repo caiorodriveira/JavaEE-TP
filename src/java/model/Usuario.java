@@ -14,7 +14,6 @@ public class Usuario {
 
     public static String createTableUsuario() {
         return "create table if not exists usuario (\n"
-                    + "id_usuario int auto_increment primary key,\n"
                     + "nome varchar(100) not null,\n"
                     + "email varchar(50) not null unique, \n"
                     + "role varchar (5) not null, \n"
@@ -26,9 +25,9 @@ public class Usuario {
         ArrayList<Usuario> usuarios = new ArrayList<>();
         Connection con = AppListener.getConnection();
         Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("select * from usuario");
+        ResultSet rs = stmt.executeQuery("select rowid,* from usuario");
         while (rs.next()) {
-            usuarios.add(new Usuario(rs.getString("nome"), rs.getString("email"), rs.getString("role"), rs.getString("senha"), rs.getLong("id_usuario")));
+            usuarios.add(new Usuario(rs.getString("nome"), rs.getString("email"), rs.getString("role"), rs.getString("senha"), rs.getLong("rowid")));
         }
         rs.close();
         stmt.close();

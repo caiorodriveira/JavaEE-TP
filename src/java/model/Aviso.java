@@ -18,12 +18,11 @@ public class Aviso {
 
     public static String createTableAviso() {
         return "create table if not exists aviso (\n"
-                + "id_aviso int auto_increment primary key,\n"
                 + "nm_titulo varchar(100) not null,\n"
                 + "ds_conteudo text,\n"
                 + "id_usuario int not null,\n"
                 + "dt_aviso varchar(50), \n"
-                + "constraint fk_usuario foreign key (id_usuario) references usuario (id_usuario))";
+                + "constraint fk_usuario foreign key (id_usuario) references usuario (rowid))";
 
     }
 
@@ -31,9 +30,9 @@ public class Aviso {
         ArrayList<Aviso> avisos = new ArrayList<>();
         Connection con = AppListener.getConnection();
         Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("select * from aviso");
+        ResultSet rs = stmt.executeQuery("select rowid,* from aviso");
         while (rs.next()) {
-            avisos.add(new Aviso(rs.getString("nm_titulo"), rs.getString("ds_conteudo"), rs.getString("dt_aviso")));
+            avisos.add(new Aviso(rs.getString("nm_titulo"), rs.getString("ds_conteudo"), rs.getString("dt_aviso"), rs.getLong("rowid")));
         }
         rs.close();
         stmt.close();
@@ -76,16 +75,18 @@ public class Aviso {
     private String titulo;
     private String conteudo;
     private String data;
+    private Long id;
 
     public Aviso() {
         this.setTitulo("[NEW]");
         this.setConteudo("[NEW]");
     }
 
-    public Aviso(String titulo, String conteudo, String data) {
+    public Aviso(String titulo, String conteudo, String data, Long id) {
         this.titulo = titulo;
         this.conteudo = conteudo;
         this.data = data;
+        this.id = id;
     }
 
     
