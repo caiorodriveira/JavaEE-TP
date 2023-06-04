@@ -45,8 +45,8 @@ public class Aviso {
         PreparedStatement stmt = con.prepareStatement("insert into aviso values(?, ?, ?, ?)");
         stmt.setString(1, titulo);
         stmt.setString(2, conteudo);
-        stmt.setString(3, data);
-        stmt.setLong(4, idUsuario);
+        stmt.setLong(3, idUsuario);
+        stmt.setString(4, data);
         stmt.execute();
         stmt.close();
         con.close();
