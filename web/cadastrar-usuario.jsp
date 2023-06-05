@@ -49,7 +49,7 @@
     </body>
     <%@include file="WEB-INF/jspf/cdnJs.jspf" %>
     <script>    
-    const app = Vue.createApp({
+    const cadastroUsuario = Vue.createApp({
         data() {
             return{
                 error: null,
@@ -91,6 +91,6 @@
             
         }
     });
-    app.mount('main');
+    cadastroUsuario.mount('main');
 </script>
 </html>
