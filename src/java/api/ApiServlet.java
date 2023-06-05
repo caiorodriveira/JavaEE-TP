@@ -133,11 +133,8 @@ public class ApiServlet extends HttpServlet {
             String email = body.getString("email");
             String senha = body.getString("senha");
             Usuario.addUsuario(nome, email, "USER", senha, true);
-//            JSONObject obj = new JSONObject();
-//            obj.put("nome", nome);
-            file.put("nome", nome);
-            file.put("email", email);
-            file.put("senha", senha);
+ 
+            file.put("message", "Usuario cadastrado com sucesso!");
             response.getWriter().print(file.toString());
         } else if(request.getMethod().toLowerCase().equals("put")){
             JSONObject body = getJSONBody(request.getReader());
@@ -149,9 +146,16 @@ public class ApiServlet extends HttpServlet {
             String password = body.getString("senha");
             Usuario.updateUsuario(id, nome, email, password, role);
             
+            file.put("message", "Usuário atualizado com sucesso!");
+            response.getWriter().print(file.toString());
+            
         } else if(request.getMethod().toLowerCase().equals("delete")){
-            Long id = Long.parseLong(request.getParameter("id_usuario"));
+            Usuario u = (Usuario) request.getSession().getAttribute("usuario");
+            Long id = u.getID();
             Usuario.deleteUsuario(id);
+            
+            file.put("message", "Usuário deletado com sucesso!");
+            response.getWriter().print(file.toString());
         }
     }
 
@@ -172,6 +176,9 @@ public class ApiServlet extends HttpServlet {
                 String conteudo = body.getString("conteudo");
                 String data = LocalDateTime.now().toString();
                 Aviso.addAviso(titulo, conteudo, data, id);
+                
+                file.put("message", "Aviso adicionado com sucesso!");
+                response.getWriter().print(file.toString());
             }
         } else if(request.getMethod().toLowerCase().equals("put")){
             if(!((Usuario)request.getSession().getAttribute("usuario")).getRole().equals("ADMIN")){
@@ -183,6 +190,9 @@ public class ApiServlet extends HttpServlet {
                 String conteudo = body.getString("conteudo");
                 String data = LocalDateTime.now().toString();
                 Aviso.updateAviso(id, titulo, conteudo, data);
+                
+                file.put("message", "Aviso atualizado com sucesso!");
+                response.getWriter().print(file.toString());
             }
         } else if(request.getMethod().toLowerCase().equals("delete")){
             if(!((Usuario)request.getSession().getAttribute("usuario")).getRole().equals("ADMIN")){
@@ -190,6 +200,9 @@ public class ApiServlet extends HttpServlet {
             } else {
                 Long id = Long.parseLong(request.getParameter("id_aviso"));
                 Aviso.removeAviso(id);
+                
+                file.put("message", "Aviso deletado com sucesso!");
+                response.getWriter().print(file.toString());
             }
         }
     }
