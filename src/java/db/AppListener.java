@@ -25,7 +25,7 @@ import model.Usuario;
 public class AppListener implements ServletContextListener {
 
     public static final String CLASS_NAME = "org.sqlite.JDBC";
-    public static final String URL = "jdbc:sqlite:db_avisos.db";
+    public static final String URL = "jdbc:sqlite:datab_avisos.db";
     public static String initializeLog = "";
     public static Exception exception = null;
 
@@ -53,9 +53,9 @@ public class AppListener implements ServletContextListener {
             //criar verificação se não existir usuário criar um admin com metodos da classe
             if(Usuario.getUsuarios().isEmpty()){
                 initializeLog += "Adding default users...";
-                Usuario.addUsuario("admin", "admin@admin.com", "ADMIN", "admin1234");
+                Usuario.addUsuario("admin", "admin@admin.com", "ADMIN", "admin1234", true);
                 initializeLog += "admin added; ";
-                Usuario.addUsuario("user", "user@default.com", "USER", "user1234");
+                Usuario.addUsuario("user", "user@default.com", "USER", "user1234", true);
                 initializeLog += "user added; ";
             }
 

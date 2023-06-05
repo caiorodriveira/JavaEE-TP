@@ -31,7 +31,7 @@ public class Aviso {
         ArrayList<Aviso> avisos = new ArrayList<>();
         Connection con = AppListener.getConnection();
         Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("select rowid,* from aviso");
+        ResultSet rs = stmt.executeQuery("select * from aviso");
         while (rs.next()) {
             avisos.add(new Aviso(rs.getString("nm_titulo"), rs.getString("ds_conteudo"), rs.getString("dt_aviso"), rs.getLong("id_aviso")));
         }
