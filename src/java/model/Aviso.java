@@ -18,11 +18,12 @@ public class Aviso {
 
     public static String createTableAviso() {
         return "create table if not exists aviso (\n"
+                + "id_aviso integer primary key autoincrement, \n"
                 + "nm_titulo varchar(100) not null,\n"
                 + "ds_conteudo text,\n"
                 + "id_usuario int not null,\n"
                 + "dt_aviso varchar(50), \n"
-                + "constraint fk_usuario foreign key (id_usuario) references usuario (rowid))";
+                + "constraint fk_usuario foreign key (id_usuario) references usuario (id_usuario))";
 
     }
 
@@ -32,7 +33,7 @@ public class Aviso {
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery("select rowid,* from aviso");
         while (rs.next()) {
-            avisos.add(new Aviso(rs.getString("nm_titulo"), rs.getString("ds_conteudo"), rs.getString("dt_aviso"), rs.getLong("rowid")));
+            avisos.add(new Aviso(rs.getString("nm_titulo"), rs.getString("ds_conteudo"), rs.getString("dt_aviso"), rs.getLong("id_aviso")));
         }
         rs.close();
         stmt.close();
@@ -54,7 +55,7 @@ public class Aviso {
 
     public static void removeAviso(Long id) throws Exception {
         Connection con = AppListener.getConnection();
-        PreparedStatement stmt = con.prepareStatement("delete from aviso where rowid = ?");
+        PreparedStatement stmt = con.prepareStatement("delete from aviso where id_aviso = ?");
         stmt.setLong(1, id);
         stmt.execute();
         stmt.close();
@@ -63,7 +64,7 @@ public class Aviso {
 
     public static void updateAviso(Long id, String titulo, String conteudo, String data) throws Exception{
         Connection con = AppListener.getConnection();
-        PreparedStatement stmt = con.prepareStatement("update aviso set titulo = ?, conteudo = ?, data = ? where rowid = ?");
+        PreparedStatement stmt = con.prepareStatement("update aviso set titulo = ?, conteudo = ?, data = ? where id_aviso = ?");
         stmt.setString(1, titulo);
         stmt.setString(2, conteudo);
         stmt.setString(3, data);

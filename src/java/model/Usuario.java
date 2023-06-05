@@ -14,10 +14,11 @@ public class Usuario {
 
     public static String createTableUsuario() {
         return "create table if not exists usuario (\n"
+                    + "id_usuario integer primary key autoincrement, \n"
                     + "nome varchar(100) not null,\n"
                     + "email varchar(50) not null unique, \n"
                     + "role varchar (5) not null, \n"
-                    + "senha varchar(250) not null,"
+                    + "senha varchar(250) not null, \n"
                     + "estado integer not null) \n";
 
         }
@@ -26,9 +27,9 @@ public class Usuario {
         ArrayList<Usuario> usuarios = new ArrayList<>();
         Connection con = AppListener.getConnection();
         Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("select rowid,* from usuario");
+        ResultSet rs = stmt.executeQuery("select * from usuario");
         while (rs.next()) {
-            usuarios.add(new Usuario(rs.getString("nome"), rs.getString("email"), rs.getString("role"), rs.getString("senha"), rs.getLong("rowid"), rs.getBoolean("estado")));
+            usuarios.add(new Usuario(rs.getString("nome"), rs.getString("email"), rs.getString("role"), rs.getString("senha"), rs.getLong("id_usuario"), rs.getBoolean("estado")));
         }
         rs.close();
         stmt.close();
@@ -57,7 +58,13 @@ public class Usuario {
         stmt.setString(2, email);
         stmt.setString(3, role);
         stmt.setString(4, AppListener.getMd5Hash(senha));
-        stmt.setBoolean(5, estado);
+        int auxEstado;
+        if(estado){
+            auxEstado = 1;
+        }else{
+            auxEstado = 0;
+        }
+        stmt.setInt(5, auxEstado);
         stmt.execute();
         stmt.close();
         con.close();
@@ -88,7 +95,7 @@ public class Usuario {
     
     public static void deleteUsuario(Long id) throws Exception {
         Connection con = AppListener.getConnection();
-        PreparedStatement stmt = con.prepareStatement("update usuario set estado = false where rowid = ?");
+        PreparedStatement stmt = con.prepareStatement("update usuario set estado = false where id_usuario = ?");
         stmt.setLong(1, id);
         stmt.execute();
         stmt.close();
@@ -97,7 +104,7 @@ public class Usuario {
         
     public static void updateUsuario(Long id, String nome, String email, String senha, String role) throws Exception{
         Connection con = AppListener.getConnection();
-        PreparedStatement stmt = con.prepareStatement("update usuario set nome = ?, email = ?, senha = ?, role = ? where rowid = ?");
+        PreparedStatement stmt = con.prepareStatement("update usuario set nome = ?, email = ?, senha = ?, role = ? where id_usuario = ?");
         stmt.setString(1, nome);
         stmt.setString(2, email);
         stmt.setString(3, senha);
