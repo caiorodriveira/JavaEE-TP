@@ -35,14 +35,14 @@ public class Usuario {
         return usuarios;
     }
     
-    public static ArrayList<Usuario> getUsuarioByEmail() throws Exception {
+    public static ArrayList<Usuario> getUsuarioByEmail(String email) throws Exception {
         ArrayList<Usuario> usuarios = new ArrayList<>();
         Connection con = AppListener.getConnection();
-        Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("select * from usuario where email = ?");
-        while (rs.next()) {
-            usuarios.add(new Usuario(rs.getString("nome"), rs.getString("email"), rs.getString("role"), rs.getString("senha"), rs.getLong("id_usuario")));
-        }
+        String sql = "SELECT * from usuario WHERE email=?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setString(1, email);
+        ResultSet rs = stmt.executeQuery();
+        usuarios.add(new Usuario(rs.getString("nome"), rs.getString("email"), rs.getString("role"), rs.getString("senha"), rs.getLong("id_usuario")));
         rs.close();
         stmt.close();
         con.close();
