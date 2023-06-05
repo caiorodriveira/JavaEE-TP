@@ -107,7 +107,7 @@ public class Usuario {
         PreparedStatement stmt = con.prepareStatement("update usuario set nome = ?, email = ?, senha = ?, role = ? where id_usuario = ?");
         stmt.setString(1, nome);
         stmt.setString(2, email);
-        stmt.setString(3, senha);
+        stmt.setString(3, AppListener.getMd5Hash(senha));
         stmt.setString(4, role);
         stmt.setLong(5, id);
         stmt.execute();

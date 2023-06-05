@@ -135,12 +135,13 @@ public class ApiServlet extends HttpServlet {
             Usuario.addUsuario(nome, email, "USER", senha, true);
         } else if(request.getMethod().toLowerCase().equals("put")){
             JSONObject body = getJSONBody(request.getReader());
-            Long id = Long.parseLong(request.getParameter("id_usuario"));
+            Usuario u = (Usuario) request.getSession().getAttribute("usuario");
+            Long id = u.getID();
             String nome = body.getString("nome");
             String email = body.getString("email");
             String role = body.getString("role");
             String password = body.getString("senha");
-            Usuario.updateUsuario(id, nome, email, role, password);
+            Usuario.updateUsuario(id, nome, email, password, role);
             
         } else if(request.getMethod().toLowerCase().equals("delete")){
             Long id = Long.parseLong(request.getParameter("id_usuario"));
