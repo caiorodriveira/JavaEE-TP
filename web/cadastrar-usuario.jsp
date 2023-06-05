@@ -66,10 +66,10 @@
                         headers: {"Content-Type": "application/json"},
                         body: JSON.stringify(data)
                     });
-                    if(response.status===200){
+                    if(response.status==200){
                         return response.json();
                     }else{
-                        this.error = response.statusText;
+                        this.error = response;
                     }
                 } catch(e){
                     this.error = e;
@@ -77,14 +77,15 @@
                 }
             },
             async addUsuario() {
-                const data = await this.request("http://localhost:8080/TP-JavaEE/api/usuarios", "POST", 
-                {nome: this.nome, email: this.email, senha: this.senha});
-                //if(data){
-                //    this.nome = "";
-                //    this.senha  = "";
-                //    this.senha = "";
-                //}
-            }
+               const ob = {nome: this.nome, email: this.email, senha: this.senha};
+                const data = await this.request("http://localhost:8080/TP-JavaEE/api/usuarios", "POST", ob);
+                if(data){
+                    this.nome = "";
+                    this.email  = "";
+                    this.senha = "";
+                }
+            },
+            
        },
         mounted() {
             

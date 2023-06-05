@@ -133,6 +133,12 @@ public class ApiServlet extends HttpServlet {
             String email = body.getString("email");
             String senha = body.getString("senha");
             Usuario.addUsuario(nome, email, "USER", senha, true);
+//            JSONObject obj = new JSONObject();
+//            obj.put("nome", nome);
+            file.put("nome", nome);
+            file.put("email", email);
+            file.put("senha", senha);
+            response.getWriter().print(file.toString());
         } else if(request.getMethod().toLowerCase().equals("put")){
             JSONObject body = getJSONBody(request.getReader());
             Usuario u = (Usuario) request.getSession().getAttribute("usuario");
