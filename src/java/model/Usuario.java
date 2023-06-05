@@ -17,7 +17,8 @@ public class Usuario {
                     + "nome varchar(100) not null,\n"
                     + "email varchar(50) not null unique, \n"
                     + "role varchar (5) not null, \n"
-                    + "senha varchar(250) not null)";
+                    + "senha varchar(250) not null,"
+                    + "estado integer not null) \n";
 
         }
     
@@ -27,7 +28,7 @@ public class Usuario {
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery("select rowid,* from usuario");
         while (rs.next()) {
-            usuarios.add(new Usuario(rs.getString("nome"), rs.getString("email"), rs.getString("role"), rs.getString("senha"), rs.getLong("rowid")));
+            usuarios.add(new Usuario(rs.getString("nome"), rs.getString("email"), rs.getString("role"), rs.getString("senha"), rs.getLong("rowid"), rs.getBoolean("estado")));
         }
         rs.close();
         stmt.close();
@@ -38,24 +39,25 @@ public class Usuario {
     public static ArrayList<Usuario> getUsuarioByEmail(String email) throws Exception {
         ArrayList<Usuario> usuarios = new ArrayList<>();
         Connection con = AppListener.getConnection();
-        String sql = "SELECT * from usuario WHERE email=?";
+        String sql = "SELECT * from usuario WHERE email=? AND estado = true";
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setString(1, email);
         ResultSet rs = stmt.executeQuery();
-        usuarios.add(new Usuario(rs.getString("nome"), rs.getString("email"), rs.getString("role"), rs.getString("senha"), rs.getLong("id_usuario")));
+        usuarios.add(new Usuario(rs.getString("nome"), rs.getString("email"), rs.getString("role"), rs.getString("senha"), rs.getLong("id_usuario"), rs.getBoolean("estado")));
         rs.close();
         stmt.close();
         con.close();
         return usuarios;
     }
     
-    public static void addUsuario(String nome, String email, String role, String senha) throws Exception {
+    public static void addUsuario(String nome, String email, String role, String senha, Boolean estado) throws Exception {
         Connection con = AppListener.getConnection();
-        PreparedStatement stmt = con.prepareStatement("insert into usuario(nome, email, role, senha) values(?, ?, ? ,?)");
+        PreparedStatement stmt = con.prepareStatement("insert into usuario(nome, email, role, senha, estado) values(?, ?, ? ,?, ?)");
         stmt.setString(1, nome);
         stmt.setString(2, email);
         stmt.setString(3, role);
         stmt.setString(4, AppListener.getMd5Hash(senha));
+        stmt.setBoolean(5, estado);
         stmt.execute();
         stmt.close();
         con.close();
@@ -64,7 +66,7 @@ public class Usuario {
     public static Usuario getUsuario(String email, String senha) throws Exception {
         Usuario user = null;
         Connection con = AppListener.getConnection();
-        String sql = "SELECT * from usuario WHERE email=? AND senha=?";
+        String sql = "SELECT * from usuario WHERE email=? AND senha=? AND estado = true";
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setString(1, email);
         stmt.setString(2, AppListener.getMd5Hash(senha));
@@ -75,7 +77,8 @@ public class Usuario {
             String role = rs.getString("role");
             String senhaHash = rs.getString("senha");
             Long idUsuario = rs.getLong("id_usuario");
-            user = new Usuario(nome, emailUsuario, role, senhaHash, idUsuario);
+            Boolean estado = rs.getBoolean("estado");
+            user = new Usuario(nome, emailUsuario, role, senhaHash, idUsuario, estado);
         }
         rs.close();
         stmt.close();
@@ -85,7 +88,7 @@ public class Usuario {
     
     public static void deleteUsuario(Long id) throws Exception {
         Connection con = AppListener.getConnection();
-        PreparedStatement stmt = con.prepareStatement("delete from usuario where rowid = ?");
+        PreparedStatement stmt = con.prepareStatement("update usuario set estado = false where rowid = ?");
         stmt.setLong(1, id);
         stmt.execute();
         stmt.close();
@@ -111,7 +114,7 @@ public class Usuario {
     private String email;
     private String senha;
     private String role;
-
+    private Boolean estado;
 
 
     
@@ -120,14 +123,16 @@ public class Usuario {
         this.setEmail("[NEW]");
         this.setSenha("[NEW]");
         this.setRole("[NEW]");
+        this.setEstado(true);
     }
 
-    public Usuario(String nome, String email, String role, String senha, Long id) {
+    public Usuario(String nome, String email, String role, String senha, Long id, Boolean estado) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
         this.role = role;
         this.ID = id;
+        this.estado = estado;
     }
     
     public String getNome() {
@@ -151,6 +156,10 @@ public class Usuario {
         return ID;
     }
     
+    public Boolean getEstado(){
+        return estado;
+    }
+    
     public void setRole(String role) {
         this.role = role;
     }
@@ -164,6 +173,10 @@ public class Usuario {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+    
+    public void setEstado(Boolean estado){
+        this.estado = estado;
     }
     
 }
