@@ -73,7 +73,21 @@ public class Aviso {
         stmt.close();
         con.close();
     }
-
+    
+    public static ArrayList<Aviso> getAvisoUsuario(String nomeUsuario) throws Exception {
+        ArrayList<Aviso> avisos = new ArrayList<>();
+        Connection con = AppListener.getConnection();
+        PreparedStatement stmt = con.prepareStatement("select * from aviso full join usuario on (aviso.id_usuario, usuario.id_usuario) where usuario.nome = ?");
+        stmt.setString(1, nomeUsuario);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            avisos.add(new Aviso(rs.getString("nm_titulo"), rs.getString("ds_conteudo"), rs.getString("dt_aviso"), rs.getLong("id_aviso")));
+        }
+        rs.close();
+        stmt.close();
+        con.close();
+        return avisos;
+    }
     private String titulo;
     private String conteudo;
     private String data;
