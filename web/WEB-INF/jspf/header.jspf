@@ -15,6 +15,7 @@
 <div id="session">
     <div v-if="data">
         <h2>Header</h2>
+        <button type="button" class="btn btn-danger" @click="logout">Logout</button>
         <hr>    
     </div>
 
@@ -33,8 +34,11 @@
                     <label for="senha" class="form-label">Senha:</label>
                     <input type="password" class="form-control" id="senha" v-model="senha"/>
                 </div>
+                <div v-if="error && error != 'N o existe sess o'">
+                    <span class="text-danger"> {{error}} </span>
+                </div>
                 <div class="action d-flex justify-content-center mt-3">
-                    <button type="button" class="btn btn-primary" @click="login">Login</button>
+                    <button type="submit" class="btn btn-primary" @click="login($event)">Login</button>
                 </div>
             </form>
         </div>
@@ -43,14 +47,15 @@
 <%@include file="cdnJs.jspf" %>
 <script>
     const shared = Vue.reactive({session: null});
-    const header = Vue.createApp({
+    
+    const session = Vue.createApp({
         data() {
             return{
+                shared: shared,
                 error: null,
                 email: "",
                 senha: "",
                 data: null,
-                shared: shared
             };
         },
         methods: {
@@ -64,30 +69,30 @@
                     if (response.status == 200) {
                         return response.json();
                     } else {
-                        this.error = response;
+                        this.error = response.statusText;
                     }
                 } catch (e) {
                     this.error = e;
                     return null;
-            }
-            },
-            async login() {
-                const obj = {
-                    "email": this.email,
-                    "senha": this.senha
-                };
-                const data = await this.request("http://localhost:8080/TP-JavaEE/api/session", "PUT", obj);
-                if (data) {
-                    this.error = null;
-                    this.data = data;
-                    this.shared.session = data;
                 }
             },
-
+            async loadSession() {
+                const data = await this.request("http://localhost:17822/TP-JavaEE/api/session", "GET");
+                if (data) {this.data = data;this.error = null; this.shared.session = this.data;}
+            },
+            async login(e) {
+                e.preventDefault();
+                const data = await this.request("http://localhost:17822/TP-JavaEE/api/session", "PUT", {email: this.email, senha: this.senha});
+                if (data) {this.error = null;this.data = data;this.shared.session = this.data;}
+            },
+            async logout() {
+                const data = await this.request("http://localhost:17822/TP-JavaEE/api/session", "DELETE");
+                if (data) {this.data = null;this.error = null;this.shared.session = this.data;}
+            }  
         },
         mounted() {
-
+            this.loadSession();
         }
     });
-    header.mount('#session');
+    session.mount('#session');
 </script>

@@ -10,18 +10,21 @@
     </head>
     <body>
         <%@include file="WEB-INF/jspf/header.jspf" %>
-        <main>
-            <h1 v-if="shared.session"> Visualização apenas se estiver logado </h1>
-        </main>
+
+        <div id="app" class="container-fluid">
+            
+        </div>
 
         <%@include file="WEB-INF/jspf/cdnJs.jspf" %>
         <script>
-            const home = Vue.createApp({
+            const app = Vue.createApp({
                 data() {
-                    return{
+                    return {
+                        shared: shared,
                         error: null,
-                        shared: shared
-                    };
+                        avisos: [],
+                        objAviso: null,
+                    }
                 },
                 methods: {
                     async request(url = "", method, data) {
@@ -34,20 +37,30 @@
                             if (response.status == 200) {
                                 return response.json();
                             } else {
-                                this.error = response;
+                                this.error = response.statusText;
                             }
                         } catch (e) {
                             this.error = e;
                             return null;
-                    }
-                    }
-
+                        }
+                    },
+                    async loadAvisos() {
+                        const data = await this.request("http://localhost:17822/TP-JavaEE/api/avisos");
+                        if (data) {
+                            this.avisos = data;
+                            console.log(this.avisos);
+//                            for(let of data){
+//                                console.log(a.conteudo);
+//                            }
+                        }
+                    },
                 },
-                mounted() {
 
-                }
+                mounted() {
+                    this.loadAvisos();
+                },
             });
-            home.mount('main');
+            app.mount('#app');
         </script>
     </body>
 </html>
