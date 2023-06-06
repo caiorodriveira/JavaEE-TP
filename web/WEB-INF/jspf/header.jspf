@@ -1,3 +1,93 @@
 <%-- any content can be specified here e.g.: --%>
 <%@ page pageEncoding="UTF-8" %>
-<h2>Hello World!</h2>
+<style>
+    main.container-fluid{
+        min-height: 100vh;
+        width: 100vw;
+    }
+    div.login_container{
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>
+<div id="session">
+    <div v-if="data">
+        <h2>Header</h2>
+        <hr>    
+    </div>
+
+    <div v-else class="login_container shadow p-3">
+        <div class="top_login">
+            <h3 class="text-center">Login</h3>
+            <hr class="m-0">
+        </div>
+        <div class="body_login">
+            <form action="login.jsp">
+                <div class="form-group">
+                    <label for="login" class="form-label">Login:</label>
+                    <input type="text" class="form-control" id="login" v-model="email"/>
+                </div>
+                <div class="form-group">
+                    <label for="senha" class="form-label">Senha:</label>
+                    <input type="password" class="form-control" id="senha" v-model="senha"/>
+                </div>
+                <div class="action d-flex justify-content-center mt-3">
+                    <button type="button" class="btn btn-primary" @click="login">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<%@include file="cdnJs.jspf" %>
+<script>
+    const shared = Vue.reactive({session: null});
+    const header = Vue.createApp({
+        data() {
+            return{
+                error: null,
+                email: "",
+                senha: "",
+                data: null,
+                shared: shared
+            };
+        },
+        methods: {
+            async request(url = "", method, data) {
+                try {
+                    const response = await fetch(url, {
+                        method: method,
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify(data)
+                    });
+                    if (response.status == 200) {
+                        return response.json();
+                    } else {
+                        this.error = response;
+                    }
+                } catch (e) {
+                    this.error = e;
+                    return null;
+            }
+            },
+            async login() {
+                const obj = {
+                    "email": this.email,
+                    "senha": this.senha
+                };
+                const data = await this.request("http://localhost:8080/TP-JavaEE/api/session", "PUT", obj);
+                if (data) {
+                    this.error = null;
+                    this.data = data;
+                    this.shared.session = data;
+                }
+            },
+
+        },
+        mounted() {
+
+        }
+    });
+    header.mount('#session');
+</script>
