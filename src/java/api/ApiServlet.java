@@ -122,24 +122,27 @@ public class ApiServlet extends HttpServlet {
     private void processUsuarios(JSONObject file, HttpServletRequest request, HttpServletResponse response) throws Exception {
         if(request.getMethod().toLowerCase().equals("get")){
             if(!((Usuario)request.getSession().getAttribute("usuario")).getRole().equals("ADMIN")){
-                response.sendError(401, "Erro! Apenas administradores podem atualizar avisos!");
+                response.sendError(401, "Erro! Apenas administradores podem visualizar usuarios!");
             } else {
                 file.put("usuarios", new JSONArray(Usuario.getUsuarios()));
                 response.getWriter().print(file.toString());
             }
         } else if(request.getMethod().toLowerCase().equals("post")){
-            JSONObject body = getJSONBody(request.getReader());
-            String nome = body.getString("nome");
-            String email = body.getString("email");
-            String senha = body.getString("senha");
-            Usuario.addUsuario(nome, email, "USER", senha, true);
+            if(!((Usuario)request.getSession().getAttribute("usuario")).getRole().equals("ADMIN")){
+                response.sendError(401, "Erro! Apenas administradores podem adicionar usuarios!");
+            } else {
+                JSONObject body = getJSONBody(request.getReader());
+                String nome = body.getString("nome");
+                String email = body.getString("email");
+                String senha = body.getString("senha");
+                Usuario.addUsuario(nome, email, "USER", senha, true);
  
-            file.put("message", "Usuario cadastrado com sucesso!");
-            response.getWriter().print(file.toString());
+                file.put("message", "Usuario cadastrado com sucesso!");
+                response.getWriter().print(file.toString());
+            }
         } else if(request.getMethod().toLowerCase().equals("put")){
             JSONObject body = getJSONBody(request.getReader());
-            Usuario u = (Usuario) request.getSession().getAttribute("usuario");
-            Long id = u.getID();
+            Long id = Long.parseLong(request.getParameter("id"));
             String nome = body.getString("nome");
             String email = body.getString("email");
             String role = body.getString("role");
@@ -150,12 +153,15 @@ public class ApiServlet extends HttpServlet {
             response.getWriter().print(file.toString());
             
         } else if(request.getMethod().toLowerCase().equals("delete")){
-            Usuario u = (Usuario) request.getSession().getAttribute("usuario");
-            Long id = u.getID();
-            Usuario.deleteUsuario(id);
+            if(!((Usuario)request.getSession().getAttribute("usuario")).getRole().equals("ADMIN")){
+                response.sendError(401, "Erro! Apenas administradores podem deletar usuarios!");
+            } else {
+                Long id = Long.parseLong(request.getParameter("id"));
+                Usuario.deleteUsuario(id);
             
-            file.put("message", "Usuário deletado com sucesso!");
-            response.getWriter().print(file.toString());
+                file.put("message", "Usuário deletado com sucesso!");
+                response.getWriter().print(file.toString());
+            }
         }
     }
 
@@ -171,7 +177,7 @@ public class ApiServlet extends HttpServlet {
                 response.sendError(401, "Erro! Apenas administradores podem adicionar avisos!");
             } else {
                 JSONObject body = getJSONBody(request.getReader());
-                Long id = Long.parseLong(request.getParameter("id_usuario"));
+                Long id = Long.parseLong(request.getParameter("idUsuario"));
                 String titulo = body.getString("titulo");
                 String conteudo = body.getString("conteudo");
                 String data = LocalDateTime.now().toString();
@@ -185,7 +191,7 @@ public class ApiServlet extends HttpServlet {
                 response.sendError(401, "Erro! Apenas administradores podem atualizar avisos!");
             } else {
                 JSONObject body = getJSONBody(request.getReader());
-                Long id = Long.parseLong(request.getParameter("id_aviso"));
+                Long id = Long.parseLong(request.getParameter("idAviso"));
                 String titulo = body.getString("titulo");
                 String conteudo = body.getString("conteudo");
                 String data = LocalDateTime.now().toString();
@@ -198,7 +204,7 @@ public class ApiServlet extends HttpServlet {
             if(!((Usuario)request.getSession().getAttribute("usuario")).getRole().equals("ADMIN")){
                 response.sendError(401, "Erro! Apenas administradores podem deletar avisos!");
             } else {
-                Long id = Long.parseLong(request.getParameter("id_aviso"));
+                Long id = Long.parseLong(request.getParameter("idAviso"));
                 Aviso.removeAviso(id);
                 
                 file.put("message", "Aviso deletado com sucesso!");
