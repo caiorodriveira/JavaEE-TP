@@ -64,7 +64,6 @@
                 const data = await this.request("http://localhost:8080/TP-JavaEE/api/session", "GET");
                 if (data) {
                     this.session = data;
-                    console.log(this.session)
                 }
             },
 

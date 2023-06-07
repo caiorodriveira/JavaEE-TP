@@ -27,7 +27,7 @@ public class Usuario {
         ArrayList<Usuario> usuarios = new ArrayList<>();
         Connection con = AppListener.getConnection();
         Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("select * from usuario");
+        ResultSet rs = stmt.executeQuery("select * from usuario where estado = 1");
         while (rs.next()) {
             usuarios.add(new Usuario(rs.getString("nome"), rs.getString("email"), rs.getString("role"), rs.getString("senha"), rs.getLong("id_usuario"), rs.getBoolean("estado")));
         }

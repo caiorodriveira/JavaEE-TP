@@ -6,7 +6,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="WEB-INF/jspf/cdnCss.jspf" %>
-        <title>JSP Page</title>
+        <title>Home Page</title>
     </head>
     <body>
         <style>
@@ -177,12 +177,11 @@
                         }
                     },
                     showAviso(aviso) {    
-                        this.openSwal({title: aviso.titulo, text: aviso.conteudo})
+                        this.openSwal({title: aviso.titulo, html: aviso.conteudo})
                     },
-                    openSwal({title, text="", html=""}){
+                    openSwal({title, html=""}){
                         Swal.fire({
                             title: title,
-                            text: text,
                             html: html
                         })
                     },

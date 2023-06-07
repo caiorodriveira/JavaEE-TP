@@ -10,7 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="WEB-INF/jspf/cdnCss.jspf" %>
-        <title>JSP Page</title>
+        <title>Avisos</title>
     </head>
     <body>
         <%@include file="WEB-INF/jspf/header.jspf" %>
