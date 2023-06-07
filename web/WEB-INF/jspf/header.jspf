@@ -1,98 +1,60 @@
 <%-- any content can be specified here e.g.: --%>
 <%@ page pageEncoding="UTF-8" %>
-<style>
-    main.container-fluid{
-        min-height: 100vh;
-        width: 100vw;
-    }
-    div.login_container{
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-</style>
-<div id="session">
-    <div v-if="data">
+
+<div id="header">
+    <div v-if="session">
         <h2>Header</h2>
         <button type="button" class="btn btn-danger" @click="logout">Logout</button>
         <hr>    
     </div>
 
-    <div v-else class="login_container shadow p-3">
-        <div class="top_login">
-            <h3 class="text-center">Login</h3>
-            <hr class="m-0">
-        </div>
-        <div class="body_login">
-            <form action="login.jsp">
-                <div class="form-group">
-                    <label for="login" class="form-label">Login:</label>
-                    <input type="text" class="form-control" id="login" v-model="email"/>
-                </div>
-                <div class="form-group">
-                    <label for="senha" class="form-label">Senha:</label>
-                    <input type="password" class="form-control" id="senha" v-model="senha"/>
-                </div>
-                <div v-if="error && error != 'N o existe sess o'">
-                    <span class="text-danger"> {{error}} </span>
-                </div>
-                <div class="action d-flex justify-content-center mt-3">
-                    <button type="submit" class="btn btn-primary" @click="login($event)">Login</button>
-                </div>
-            </form>
-        </div>
-    </div>
+
 </div>
 <%@include file="cdnJs.jspf" %>
 <script>
-    const shared = Vue.reactive({session: null});
-    
-    const session = Vue.createApp({
-        data() {
-            return{
-                shared: shared,
-                error: null,
-                email: "",
-                senha: "",
-                data: null,
-            };
-        },
-        methods: {
-            async request(url = "", method, data) {
-                try {
-                    const response = await fetch(url, {
-                        method: method,
-                        headers: {"Content-Type": "application/json"},
-                        body: JSON.stringify(data)
-                    });
-                    if (response.status == 200) {
-                        return response.json();
-                    } else {
-                        this.error = response.statusText;
+     const header = Vue.createApp({
+                data() {
+                    return {
+                        session: null,
                     }
-                } catch (e) {
-                    this.error = e;
-                    return null;
-                }
-            },
-            async loadSession() {
-                const data = await this.request("http://localhost:17822/TP-JavaEE/api/session", "GET");
-                if (data) {this.data = data;this.error = null; this.shared.session = this.data;}
-            },
-            async login(e) {
-                e.preventDefault();
-                const data = await this.request("http://localhost:17822/TP-JavaEE/api/session", "PUT", {email: this.email, senha: this.senha});
-                if (data) {this.error = null;this.data = data;this.shared.session = this.data;}
-            },
-            async logout() {
-                const data = await this.request("http://localhost:17822/TP-JavaEE/api/session", "DELETE");
-                if (data) {this.data = null;this.error = null;this.shared.session = this.data;}
-            }  
-        },
-        mounted() {
-            this.loadSession();
-        }
-    });
-    session.mount('#session');
+                },
+                methods: {
+                    async request(url = "", method, data) {
+                        try {
+                            const response = await fetch(url, {
+                                method: method,
+                                headers: {"Content-Type": "application/json"},
+                                body: JSON.stringify(data)
+                            });
+                            if (response.status == 200) {
+                                return response.json();
+                            } else {
+                                this.error = response.statusText;
+                            }
+                        } catch (e) {
+                            this.error = e;
+                            return null;
+                    }
+                    },
+                    async loadSession() {
+                        const data = await this.request("http://localhost:8080/TP-JavaEE/api/session", "GET");
+                        if(data){
+                            this.session = data;
+                        }
+                    },
+                    
+                    async logout(){
+                        const data = await this.request("http://localhost:8080/TP-JavaEE/api/session", "DELETE");
+                        if(data){
+                            window.location.href = "login.jsp"
+                        }
+                    }
+                },
+
+                mounted() {
+                    this.loadSession();
+                },
+            });
+            header.mount('#header');
+    
 </script>

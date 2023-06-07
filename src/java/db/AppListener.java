@@ -25,7 +25,7 @@ import model.Usuario;
 public class AppListener implements ServletContextListener {
 
     public static final String CLASS_NAME = "org.sqlite.JDBC";
-    public static final String URL = "jdbc:sqlite:datab_avisos.db";
+    public static final String URL = "jdbc:sqlite:avisos_db.db";
     public static String initializeLog = "";
     public static Exception exception = null;
 
