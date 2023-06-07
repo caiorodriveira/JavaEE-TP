@@ -86,7 +86,7 @@
                                     </span>
                                 </td>
                             </tr>
-                            </tbodu>
+                            </tbody>
                     </table>
                 </div>
             </div>
@@ -149,7 +149,6 @@
                             this.objUsuario.nome = null;
                             this.objUsuario.email = null;
                             this.objUsuario.senha = null;
-                            this.objUsuario.id = null;
                             this.objUsuario.role = null;
                             this.loadUsuarios();
                         }
@@ -187,7 +186,7 @@
                         cancelButtonColor: "#0d6efd"
                     }).then(result => {
                         if (result.isConfirmed) {
-                            this.removeUsuario(auxUsuario);
+                            this.removeUsuario(usuario);
                         }
                     })
                 },
@@ -198,7 +197,7 @@
                         this.loadUsuarios();
                     }
                 },
-                async openSwal( {title, text = "", icon = "", confirm = "Ok", cancel = null}){
+                openSwal( {title, text = "", icon = "", confirm = "Ok", cancel = null}){
                     Swal.fire({
                         title: title,
                         text: text,

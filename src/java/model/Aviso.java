@@ -43,7 +43,7 @@ public class Aviso {
 
     public static void addAviso(String titulo, String conteudo, String data, Long idUsuario) throws Exception {
         Connection con = AppListener.getConnection();
-        PreparedStatement stmt = con.prepareStatement("insert into aviso values(?, ?, ?, ?)");
+        PreparedStatement stmt = con.prepareStatement("insert into aviso(nm_titulo, ds_conteudo, id_usuario, dt_aviso) values(?, ?, ?, ?)");
         stmt.setString(1, titulo);
         stmt.setString(2, conteudo);
         stmt.setLong(3, idUsuario);

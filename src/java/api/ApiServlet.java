@@ -91,6 +91,7 @@ public class ApiServlet extends HttpServlet {
                 response.sendError(403, "Email ou Senha invalidos!");
             } else {
                 request.getSession().setAttribute("usuario", u);
+                file.put("id", u.getID());
                 file.put("nome", u.getNome());
                 file.put("email", u.getEmail());
                 file.put("role", u.getRole());
@@ -109,6 +110,7 @@ public class ApiServlet extends HttpServlet {
                 response.sendError(403, "Não existe sessão");
             } else {
                 Usuario u = (Usuario) request.getSession().getAttribute("usuario");
+                file.put("id", u.getID());
                 file.put("nome", u.getNome());
                 file.put("email", u.getEmail());
                 file.put("role", u.getRole());

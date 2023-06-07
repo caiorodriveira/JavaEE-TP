@@ -132,7 +132,7 @@
                         <div class="aviso col-md-2 shadow" v-for="aviso in avisos" @click="showAviso(aviso)">
 
                             <span class="text-center"><strong> {{aviso.titulo}} </strong></span>
-                            <span><strong>Data: </strong> {{aviso.data}}</span>
+                            <span><strong>Data: </strong> {{new Date(aviso.data).toLocaleDateString('pt-BR', { timeZone: 'UTC', year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d+)\/(\d+)\/(\d+)/, '$1/$2/$3')}}</span>
 
                         </div>
 
