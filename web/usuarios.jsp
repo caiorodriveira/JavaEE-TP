@@ -18,6 +18,7 @@
         }
     </style>
     <body>
+        <%@include file="WEB-INF/jspf/header.jspf" %>
         <main class="container-fluid m-0 p-0 d-flex flex-column">
             <div class="card_form shadow align-self-center p-3 mt-5 w-50">
                 <form id="cadastro-usuario">

@@ -129,7 +129,7 @@
 
                     <div class="content-container row">
 
-                        <div class="aviso col-md-2 shadow" v-for="aviso in avisos" >
+                        <div class="aviso col-md-2 shadow" v-for="aviso in avisos" @click="showAviso(aviso)">
 
                             <span class="text-center"><strong> {{aviso.titulo}} </strong></span>
                             <span><strong>Data: </strong> {{aviso.data}}</span>
@@ -175,6 +175,16 @@
                         if (data) {
                             this.avisos = data.avisos;
                         }
+                    },
+                    showAviso(aviso) {    
+                        this.openSwal({title: aviso.titulo, text: aviso.conteudo})
+                    },
+                    openSwal({title, text="", html=""}){
+                        Swal.fire({
+                            title: title,
+                            text: text,
+                            html: html
+                        })
                     },
                     async loadSession() {
                         const data = await this.request("http://localhost:8080/TP-JavaEE/api/session", "GET");
