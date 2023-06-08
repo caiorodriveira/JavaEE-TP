@@ -15,10 +15,7 @@
     <body>
         <style>
             #infos {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
+                margin-top: 100px;
             }
         </style>
     <body>
@@ -26,19 +23,19 @@
         <main>
             <div class="container-fluid m-0 p-0 d-flex flex-column" v-if="session">
                 
-               <div class="card_form shadow align-self-center p-3 mt-5 w-50">
+                <div class="card_form shadow align-self-center p-3 w-50" id="infos">
                     <h1 style="text-align:center">Informações do Usuário</h1> <hr>
                 <div class="form-group">
                             <label for="nome" class="form-label">Nome</label>
-                            <input type="text" class="form-control" id="nome" disabled v-bind:value="session.nome"/>
+                            <input type="text" class="form-control mb-4" id="nome" disabled v-bind:value="session.nome"/>
                         </div>
                 <div class="form-group">
                             <label for="nome" class="form-label">Email</label>
-                            <input type="text" class="form-control" id="nome" disabled v-bind:value="session.email"/>
+                            <input type="text" class="form-control mb-4" id="nome" disabled v-bind:value="session.email"/>
                         </div>
                 <div class="form-group">
                             <label for="nome" class="form-label">Role</label>
-                            <input type="text" class="form-control" id="nome" disabled v-bind:value="session.role"/>
+                            <input type="text" class="form-control mb-4" id="nome" disabled v-bind:value="session.role"/>
                         </div>
                 </div>
               
