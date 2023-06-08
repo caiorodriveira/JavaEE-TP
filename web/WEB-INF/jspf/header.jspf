@@ -21,7 +21,7 @@
                     <span class="material-symbols-outlined text-white">
                         person
                     </span>
-                    <span class="text-white">{{session.nome}}</span>
+                    <a href="infoUsuario.jsp" style="text-decoration:none" class="text-white">{{session.nome}}</a>
                     <button class="btn btn-danger d-flex" @click="logout()">
                         <span class="material-symbols-outlined">
                             logout
