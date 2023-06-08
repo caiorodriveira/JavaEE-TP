@@ -19,34 +19,51 @@
                 width: 100vw;
             }
             div.login_container{
+                height: 50vh;
+                width: 50vw;
                 position: fixed;
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
             }
+            .form-group{
+                width: 80%;
+                align-self: center;
+            }
+
         </style>
-        <div id="login" class="login_container shadow p-3">
-            <div class="top_login">
-                <h3 class="text-center">Login</h3>
-                <hr class="m-0">
+        <div class="d-flex login_container shadow">
+            <div id="login" class="p-3 w-50">
+                <div class="top_login">
+                    <h3 class="text-center">Login</h3>
+                    <hr class="m-0">
+                </div>
+                <div class="body_login">
+                    <form class="mt-5 d-flex flex-column">
+                        <div class="form-group">
+                            <label for="login" class="form-label">Login:</label>
+                            <input type="text" class="form-control" id="login" v-model="email"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="senha" class="form-label">Senha:</label>
+                            <input type="password" class="form-control" id="senha" v-model="senha"/>
+                        </div>
+                        <div v-if="error && error != 'N o existe sess o'">
+                            <span class="text-danger"> {{error}} </span>
+                        </div>
+                        <div class="action d-flex justify-content-center mt-5">
+                            <button type="submit" class="btn btn-primary" @click="login($event)">Login</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="body_login">
-                <form action="login.jsp">
-                    <div class="form-group">
-                        <label for="login" class="form-label">Login:</label>
-                        <input type="text" class="form-control" id="login" v-model="email"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="senha" class="form-label">Senha:</label>
-                        <input type="password" class="form-control" id="senha" v-model="senha"/>
-                    </div>
-                    <div v-if="error && error != 'N o existe sess o'">
-                        <span class="text-danger"> {{error}} </span>
-                    </div>
-                    <div class="action d-flex justify-content-center mt-3">
-                        <button type="submit" class="btn btn-primary" @click="login($event)">Login</button>
-                    </div>
-                </form>
+            <div class="p3 py-5 img_login bg-dark w-50 h-100 d-flex flex-column justify-content-between">
+                <div class="icon_login align-self-center">
+                    <span class="material-symbols-outlined" style="font-size: 200px; color: #d6d6d6"> grid_view </span>
+                </div>
+                <div class="title_login align-self-center">
+                    <h2 class="text-light text-center" style="color: #d6d6d6">Quadro de avisos</h2>
+                </div>
             </div>
         </div>
         <%@include file="WEB-INF/jspf/cdnJs.jspf" %>
