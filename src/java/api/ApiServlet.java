@@ -13,8 +13,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import model.Aviso;
 import model.Usuario;
 import org.json.JSONArray;
@@ -196,8 +198,10 @@ public class ApiServlet extends HttpServlet {
                 Long id = Long.parseLong(request.getParameter("idAviso"));
                 String titulo = body.getString("titulo");
                 String conteudo = body.getString("conteudo");
-                String data = LocalDateTime.now().toString();
-                Aviso.updateAviso(id, titulo, conteudo, data);
+                Date dataAtual = new Date();
+                SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+                String dataAtualString = formato.format(dataAtual);
+                Aviso.updateAviso(id, titulo, conteudo, dataAtualString);
                 
                 file.put("message", "Aviso atualizado com sucesso!");
                 response.getWriter().print(file.toString());
