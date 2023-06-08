@@ -179,7 +179,7 @@ public class ApiServlet extends HttpServlet {
                 response.sendError(401, "Erro! Apenas administradores podem adicionar avisos!");
             } else {
                 JSONObject body = getJSONBody(request.getReader());
-                Long id = Long.parseLong(request.getParameter("idUsuario"));
+                Long id = Long.parseLong(request.getParameter("idUsuario")); 
                 String titulo = body.getString("titulo");
                 String conteudo = body.getString("conteudo");
                 String data = LocalDateTime.now().toString();

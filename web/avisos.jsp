@@ -206,7 +206,7 @@
                             title: title,
                             text: text,
                             icon: icon,
-                            html: html == "" ? html : "<textarea style='width:100%; min-height: 150px; resize: none';'>" + html + "</textarea>",
+                            html: html == "" ? html : "<textarea disabled style='width:100%; min-height: 150px; resize: none';'>" + html + "</textarea>",
                             confirmButtonText: confirm,
                             cancelButtonText: cancel
                         });
