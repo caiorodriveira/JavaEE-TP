@@ -131,4 +131,9 @@ public class Aviso {
         this.data = data;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    
 }
