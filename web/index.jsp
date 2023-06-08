@@ -182,7 +182,7 @@
                     openSwal({title, html=""}){
                         Swal.fire({
                             title: title,
-                            html: html
+                            html: "<textarea style='width:100%; min-height: 150px; resize: none';'>"+html+"</textarea>",
                         })
                     },
                     async loadSession() {

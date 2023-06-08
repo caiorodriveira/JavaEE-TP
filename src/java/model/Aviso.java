@@ -64,7 +64,7 @@ public class Aviso {
 
     public static void updateAviso(Long id, String titulo, String conteudo, String data) throws Exception{
         Connection con = AppListener.getConnection();
-        PreparedStatement stmt = con.prepareStatement("update aviso set titulo = ?, conteudo = ?, data = ? where id_aviso = ?");
+        PreparedStatement stmt = con.prepareStatement("update aviso set nm_titulo = ?, ds_conteudo = ?, dt_aviso = ? where id_aviso = ?");
         stmt.setString(1, titulo);
         stmt.setString(2, conteudo);
         stmt.setString(3, data);
@@ -112,7 +112,7 @@ public class Aviso {
     }
 
     public String getConteudo() {
-        return titulo;
+        return conteudo;
     }
 
     public String getData() {

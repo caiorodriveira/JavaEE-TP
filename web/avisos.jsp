@@ -50,7 +50,7 @@
                             <label for="floatingTextarea">Conteudo</label>
                         </div>
                         <div class="action d-flex justify-content-center mt-3">
-                            <button type="button" class="btn btn-primary" @click="addAviso()">Salvar</button>
+                            <button type="button" class="btn btn-primary" @click="verifyRequest(objAviso)">Salvar</button>
                         </div>
                     </form>
                 </div>
@@ -67,9 +67,9 @@
                         </thead>
                         <tbody>
                             <tr class="aviso_tr" v-for="aviso in avisos">
-                                <td @click="showAviso(aviso)">{{aviso.id_aviso}}</td>
+                                <td @click="showAviso(aviso)">{{aviso.id}}</td>
                                 <td @click="showAviso(aviso)">{{aviso.titulo}}</td>
-                                <td @click="showAviso(aviso)">{{new Date(aviso.data).toLocaleDateString('pt-BR', { timeZone: 'UTC', year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/(\d+)\/(\d+)\/(\d+)/, '$1/$2/$3')}}</td>
+                                <td @click="showAviso(aviso)">{{aviso.data}}</td>
                                 <!--<td v-if="usuario.estado" class="text-success text-center" style="cursor: pointer" @click="disableUsuario(usuario)">O</td>
                                 <td v-else class="text-danger text-center" style="cursor: pointer" @click="disableUsuario(usuario)">O</td>-->
                                 <td>
@@ -78,7 +78,7 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <span class="material-symbols-outlined text-primary">
+                                    <span class="material-symbols-outlined text-primary" @click="patchForm(aviso)">
                                         edit
                                     </span>
                                 </td>
@@ -132,8 +132,10 @@
                     async loadAvisos() {
                         const data = await this.request("http://localhost:8080/TP-JavaEE/api/avisos", "GET");
                         if (data) {
+                            data.avisos.forEach(aviso => {
+                                aviso.data = new Date(aviso.data).toLocaleDateString('pt-BR', {timeZone: 'UTC', year: 'numeric', month: '2-digit', day: '2-digit'}).replace(/(\d+)\/(\d+)\/(\d+)/, '$1/$2/$3')
+                            });
                             this.avisos = data.avisos;
-                            console.log(this.avisos);
                         }
                     },
                     showAviso(aviso) {
@@ -151,11 +153,36 @@
                             }
                         }
                     },
+                    verifyRequest(aviso) {
+                        if (aviso.id != null) {
+                            this.editAviso(aviso);
+                        } else {
+                            this.addAviso(aviso);
+                        }
+                    },
+                    patchForm(aviso) {
+                        if (this.objAviso.id) {
+                            this.avisos.push(this.objAviso);
+                        }
+                        this.objAviso = aviso;
+                        this.avisos.splice(this.avisos.indexOf(this.objAviso), 1);
+                    },
+                    async editAviso(aviso) {
+                        if (!this.objAviso.titulo || !this.objAviso.conteudo) {
+                            this.openSwal({title: "Preencha todos os campos", icon: "error"});
+                        } else {
+                            const data = await this.request("http://localhost:8080/TP-JavaEE/api/avisos?idAviso=" + aviso.id, "PUT", aviso);
+                            this.objAviso.titulo = null;
+                            this.objAviso.conteudo = null;
+                            this.objAviso.id = null;
+                            this.objAviso.data = null;
+                            this.loadAvisos();
+                        }
+                    },
                     confirmRemove(aviso) {
-                        console.log(aviso)
                         Swal.fire({
                             icon: "question",
-                            html: "<h4>Deseja remover o usuario <strong>" + aviso.titulo + "</strong> </h4>",
+                            html: "<h4>Deseja remover o aviso <strong>" + aviso.titulo + "</strong> </h4>",
                             confirmButtonText: "Remover",
                             confirmButtonColor: "#dc3545",
                             showCancelButton: true,
@@ -168,18 +195,18 @@
                         })
                     },
                     async removeAviso(aviso) {
-                        const data = await this.request("http://localhost:8080/TP-JavaEE/api/usuarios?idAviso=" + aviso.ID, "DELETE");
+                        const data = await this.request("http://localhost:8080/TP-JavaEE/api/avisos?idAviso=" + aviso.id, "DELETE");
                         if (data) {
-                            this.openSwal({title: "Aciso removido com sucesso", icon: "success"});
-                            this.loadUsuarios();
+                            this.openSwal({title: "Aviso removido com sucesso", icon: "success"});
+                            this.loadAvisos();
                         }
                     },
-                    openSwal( {title, text = "", html = "", icon = "", confirm = "Ok", cancel = null}){
+                    openSwal( {title, text = "", html = "", icon = "", confirm = "Ok", cancel = "cancelar"}){
                         Swal.fire({
                             title: title,
                             text: text,
                             icon: icon,
-                            html: html,
+                            html: html == "" ? html : "<textarea style='width:100%; min-height: 150px; resize: none';'>" + html + "</textarea>",
                             confirmButtonText: confirm,
                             cancelButtonText: cancel
                         });
