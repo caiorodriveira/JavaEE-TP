@@ -19,7 +19,7 @@
                 width: 100vw;
             }
             div.login_container{
-                height: 50vh;
+                min-height: 50vh;
                 width: 50vw;
                 position: fixed;
                 top: 50%;
@@ -48,16 +48,16 @@
                             <label for="senha" class="form-label">Senha:</label>
                             <input type="password" class="form-control" id="senha" v-model="senha"/>
                         </div>
-                        <div v-if="error && error != 'N o existe sess o'">
-                            <span class="text-danger"> {{error}} </span>
+                        <div class="w-100 d-flex justify-content-center">
+                            <span v-if="error && error != 'N o existe sess o'" class="text-danger"> {{error}} </span>
                         </div>
-                        <div class="action d-flex justify-content-center mt-5">
+                        <div class="action d-flex justify-content-center mt-3">
                             <button type="submit" class="btn btn-primary" @click="login($event)">Login</button>
                         </div>
                     </form>
                 </div>
             </div>
-            <div class="p3 py-5 img_login bg-dark w-50 h-100 d-flex flex-column justify-content-between">
+            <div class="p-3 py-5 img_login bg-dark w-50 h-100 d-flex flex-column justify-content-between">
                 <div class="icon_login align-self-center">
                     <span class="material-symbols-outlined" style="font-size: 200px; color: #d6d6d6"> grid_view </span>
                 </div>
