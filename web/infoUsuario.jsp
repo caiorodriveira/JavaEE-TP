@@ -10,7 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%@include file="WEB-INF/jspf/cdnCss.jspf" %>
-        <title>Avisos</title>
+        <title>Informações</title>
     </head>
     <body>
         <style>
@@ -44,7 +44,7 @@
         </main>
         <%@include file="WEB-INF/jspf/cdnJs.jspf" %>
         <script>
-            const aviso = Vue.createApp({
+            const infos = Vue.createApp({
                 data() {
                     return{
                         error: null,
@@ -82,7 +82,7 @@
                     this.loadSession();
                 }
             });
-            aviso.mount("main");
+            infos.mount("main");
         </script>
     </body>
 </html>
