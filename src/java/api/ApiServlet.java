@@ -197,10 +197,8 @@ public class ApiServlet extends HttpServlet {
                 Long id = Long.parseLong(request.getParameter("idAviso"));
                 String titulo = body.getString("titulo");
                 String conteudo = body.getString("conteudo");
-                Date dataAtual = new Date();
-                SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-                String dataAtualString = formato.format(dataAtual);
-                Aviso.updateAviso(id, titulo, conteudo, dataAtualString);
+                String data = LocalDateTime.now().toString();
+                Aviso.updateAviso(id, titulo, conteudo, data);
 
                 file.put("message", "Aviso atualizado com sucesso!");
                 response.getWriter().print(file.toString());
