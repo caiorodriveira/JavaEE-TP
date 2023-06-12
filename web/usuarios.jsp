@@ -166,7 +166,7 @@
                     if (!this.objUsuario.nome || !this.objUsuario.email || !this.objUsuario.senha) {
                         this.openSwal({title: "Preencha todos os campos", icon: "error"});
                     } else {
-                        const data = await this.request("http://localhost:17822/TP-JavaEE/api/usuarios?id="+usuario.ID, "PUT", usuario);
+                        const data = await this.request("http://localhost:8080/TP-JavaEE/api/usuarios?id="+usuario.ID, "PUT", usuario);
                         this.objUsuario.nome = null;
                         this.objUsuario.email = null;
                         this.objUsuario.senha = null;
@@ -191,7 +191,7 @@
                     })
                 },
                 async removeUsuario(usuario) {
-                    const data = await this.request("http://localhost:17822/TP-JavaEE/api/usuarios?id=" + usuario.ID, "DELETE");
+                    const data = await this.request("http://localhost:8080/TP-JavaEE/api/usuarios?id=" + usuario.ID, "DELETE");
                     if (data) {
                         this.openSwal({title: "Usuario removido com sucesso", icon: "success"});
                         this.loadUsuarios();
@@ -207,13 +207,13 @@
                     });
                 },
                 async loadUsuarios() {
-                    const data = await this.request("http://localhost:17822/TP-JavaEE/api/usuarios", "GET");
+                    const data = await this.request("http://localhost:8080/TP-JavaEE/api/usuarios", "GET");
                     if (data) {
                         this.usuarios = data.usuarios;
                     }
                 },
                 async loadSession() {
-                    const data = await this.request("http://localhost:17822/TP-JavaEE/api/session", "GET");
+                    const data = await this.request("http://localhost:8080/TP-JavaEE/api/session", "GET");
                     if (data) {
                         this.session = data;
                     } else {
