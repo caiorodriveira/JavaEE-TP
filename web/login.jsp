@@ -96,7 +96,7 @@
                     },
                     async login(e) {
                         e.preventDefault();
-                        const data = await this.request("http://localhost:17822/TP-JavaEE/api/session", "PUT", {email: this.email, senha: this.senha});
+                        const data = await this.request("http://localhost:8080/TP-JavaEE/api/session", "PUT", {email: this.email, senha: this.senha});
                         if (data) {
                             this.error = null;
                             this.data = data;

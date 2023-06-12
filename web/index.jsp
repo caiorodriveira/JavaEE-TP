@@ -171,7 +171,7 @@
                     }
                     },
                     async loadAvisos() {
-                        const data = await this.request("http://localhost:17822/TP-JavaEE/api/avisos", "GET");
+                        const data = await this.request("http://localhost:8080/TP-JavaEE/api/avisos", "GET");
                         if (data) {
                             this.avisos = data.avisos;
                         }
@@ -186,7 +186,7 @@
                         })
                     },
                     async loadSession() {
-                        const data = await this.request("http://localhost:17822/TP-JavaEE/api/session", "GET");
+                        const data = await this.request("http://localhost:8080/TP-JavaEE/api/session", "GET");
                         if (data) {
                             this.session = data;
                         } else {

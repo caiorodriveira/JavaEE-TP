@@ -144,7 +144,7 @@
                     if (!this.objUsuario.nome || !this.objUsuario.email || !this.objUsuario.senha) {
                         this.openSwal({title: "Preencha todos os campos", icon: "error"});
                     } else {
-                        const data = await this.request("http://localhost:17822/TP-JavaEE/api/usuarios", "POST", this.objUsuario);
+                        const data = await this.request("http://localhost:8080/TP-JavaEE/api/usuarios", "POST", this.objUsuario);
                         if (data) {
                             this.objUsuario.nome = null;
                             this.objUsuario.email = null;
