@@ -130,7 +130,7 @@
                     }
                     },
                     async loadAvisos() {
-                        const data = await this.request("http://localhost:8080/TP-JavaEE/api/avisos", "GET");
+                        const data = await this.request("http://localhost:17822/TP-JavaEE/api/avisos", "GET");
                         if (data) {
                             data.avisos.forEach(aviso => {
                                 aviso.data = new Date(aviso.data).toLocaleDateString('pt-BR', {timeZone: 'UTC', year: 'numeric', month: '2-digit', day: '2-digit'}).replace(/(\d+)\/(\d+)\/(\d+)/, '$1/$2/$3')
@@ -145,7 +145,7 @@
                         if (!this.objAviso.titulo || !this.objAviso.conteudo) {
                             this.openSwal({title: "Preencha todos os campos", icon: "error"});
                         } else {
-                            const data = await this.request("http://localhost:8080/TP-JavaEE/api/avisos?idUsuario=" + this.session.id, "POST", this.objAviso);
+                            const data = await this.request("http://localhost:17822/TP-JavaEE/api/avisos?idUsuario=" + this.session.id, "POST", this.objAviso);
                             if (data) {
                                 this.objAviso.titulo = null;
                                 this.objAviso.conteudo = null;
@@ -171,7 +171,7 @@
                         if (!this.objAviso.titulo || !this.objAviso.conteudo) {
                             this.openSwal({title: "Preencha todos os campos", icon: "error"});
                         } else {
-                            const data = await this.request("http://localhost:8080/TP-JavaEE/api/avisos?idAviso=" + aviso.id, "PUT", aviso);
+                            const data = await this.request("http://localhost:17822/TP-JavaEE/api/avisos?idAviso=" + aviso.id, "PUT", aviso);
                             this.objAviso.titulo = null;
                             this.objAviso.conteudo = null;
                             this.objAviso.id = null;
@@ -195,7 +195,7 @@
                         })
                     },
                     async removeAviso(aviso) {
-                        const data = await this.request("http://localhost:8080/TP-JavaEE/api/avisos?idAviso=" + aviso.id, "DELETE");
+                        const data = await this.request("http://localhost:17822/TP-JavaEE/api/avisos?idAviso=" + aviso.id, "DELETE");
                         if (data) {
                             this.openSwal({title: "Aviso removido com sucesso", icon: "success"});
                             this.loadAvisos();
@@ -212,7 +212,7 @@
                         });
                     },
                     async loadSession() {
-                        const data = await this.request("http://localhost:8080/TP-JavaEE/api/session", "GET");
+                        const data = await this.request("http://localhost:17822/TP-JavaEE/api/session", "GET");
                         if (data) {
                             this.session = data;
                         } else {

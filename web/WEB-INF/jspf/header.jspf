@@ -61,14 +61,14 @@
             }
             },
             async loadSession() {
-                const data = await this.request("http://localhost:8080/TP-JavaEE/api/session", "GET");
+                const data = await this.request("http://localhost:17822/TP-JavaEE/api/session", "GET");
                 if (data) {
                     this.session = data;
                 }
             },
 
             async logout() {
-                const data = await this.request("http://localhost:8080/TP-JavaEE/api/session", "DELETE");
+                const data = await this.request("http://localhost:17822/TP-JavaEE/api/session", "DELETE");
                 if (data) {
                     window.location.href = "login.jsp"
                 }

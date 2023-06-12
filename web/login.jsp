@@ -19,8 +19,8 @@
                 width: 100vw;
             }
             div.login_container{
-                min-height: 50vh;
-                width: 50vw;
+                height: 365px;
+                width: 730px;
                 position: fixed;
                 top: 50%;
                 left: 50%;
@@ -96,7 +96,7 @@
                     },
                     async login(e) {
                         e.preventDefault();
-                        const data = await this.request("http://localhost:8080/TP-JavaEE/api/session", "PUT", {email: this.email, senha: this.senha});
+                        const data = await this.request("http://localhost:17822/TP-JavaEE/api/session", "PUT", {email: this.email, senha: this.senha});
                         if (data) {
                             this.error = null;
                             this.data = data;
